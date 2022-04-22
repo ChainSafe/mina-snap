@@ -1,7 +1,8 @@
-import { MetamaskState, Wallet } from "../interfaces";
+import type { SnapProvider } from "@metamask/snap-types";
+import { MetamaskState } from "../interfaces";
 
 export async function configure(
-  wallet: Wallet,
+  wallet: SnapProvider,
   network: string
 ): Promise<MetamaskState> {
   await wallet.request({
