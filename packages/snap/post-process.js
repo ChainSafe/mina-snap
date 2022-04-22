@@ -10,42 +10,12 @@ let bundleString = fs.readFileSync(bundlePath, 'utf8');
 bundleString = 'var self = window;\n'.concat(bundleString);
 
 // Remove 'use asm' tokens; they cause pointless console warnings
-bundleString = bundleString.replaceAll(
-  "c6.process",
-  "{}.process",
-);
-bundleString = bundleString.replaceAll(
-  "c6.WeakMap",
-  "undefined",
-);
-bundleString = bundleString.replaceAll(
-  "c6.WeakMap",
-  "globalThis.WeakMap",
-);
-bundleString = bundleString.replaceAll(
-  "c6.BigInt",
-  "globalThis.BigInt",
-);
-bundleString = bundleString.replaceAll(
-  "c6.RangeError",
-  "globalThis.RangeError",
-);
+
 bundleString = bundleString.replaceAll(
   "a=c6",
-  "a={}",
+  "a=globalThis",
 );
-bundleString = bundleString.replaceAll(
-  "c6.caml_fs_tmp",
-  "undefined",
-);
-bundleString = bundleString.replaceAll(
-  "c6.caml_create_file",
-  "undefined",
-);
-bundleString = bundleString.replaceAll(
-  "c6.toplevelReloc",
-  "undefined",
-);
+
 bundleString = bundleString.replaceAll(
   ";undefined=cxl;undefined=[]",
   "",
