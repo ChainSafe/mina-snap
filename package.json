@@ -1,0 +1,33 @@
+{
+  "name": "root",
+  "private": true,
+  "author": "ChainSafe <info@chainsafe.io>",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "enginge": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "build:snap": "lerna run build --scope @chainsafe/minasnap",
+    "start:snap": "lerna run start --scope @chainsafe/minasnap",
+    "start:snap:watch": "lerna run watch --scope @chainsafe/minasnap",
+    "start:demo:local": "REACT_APP_SNAP=local lerna run start --scope demo-dapp",
+    "build": "yarn run build:local",
+    "build:local": "REACT_APP_SNAP=local lerna run build",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "lint:fix": "lerna run lint:fix",
+    "demo": "yarn run demo:local",
+    "demo:local": "concurrently  --raw --kill-others \"yarn run start:snap\" \"yarn run start:demo:local\"",
+    "demo:watch": "concurrently  --raw --kill-others \"yarn run start:snap:watch \" \"yarn run start:demo:local\""
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.35",
+    "eslint-plugin-prettier": "^4.0.0",
+    "lerna": "^3.20.2",
+    "prettier": "^2.6.2",
+    "typescript": "4.3.5"
+  }
+}

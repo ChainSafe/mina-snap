@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "proposedName": "minasnap",
+  "description": "The Mina snap.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chainsafe/minasnap.git"
+  },
+  "source": {
+    "shasum": "+e/XYL24x3utSQaa1hG4zfp5kGp8zND25O0YNmvzNd0=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "packageName": "@chainsafe/minasnap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "endowment:network-access": {},
+    "snap_confirm": {},
+    "snap_getBip44Entropy_1": {},
+    "snap_getBip44Entropy_461": {},
+    "snap_manageState": {}
+  },
+  "manifestVersion": "0.1"
+}
