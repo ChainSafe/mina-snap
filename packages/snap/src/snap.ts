@@ -35,19 +35,19 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
 
   switch (request.method) {
     case Methods.Configure:
-      break;
+      throw new Error("");
     case Methods.GetAddress:
-      break;
+      throw new Error("");
     case Methods.GetBalance:
-      break;
+      throw new Error("");
     case Methods.SignMessage:
-      return signMessage(
+      return await signMessage(
         wallet,
         client,
         (request.params as { message: string }).message
       );
     case Methods.SendMessage:
-      break;
+      throw new Error("");
     default:
       throw new Error("Unsupported network error");
   }
