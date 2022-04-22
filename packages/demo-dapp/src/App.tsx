@@ -1,5 +1,6 @@
-import React from 'react';
-import './App.css';
+import React, { useState } from 'react';
+import { Button, Pane, Text, majorScale } from 'evergreen-ui'
+import { Dashboard } from './Dashboard';
 
 export const defaultSnapId = 'local:http://localhost:8081';
 
@@ -33,6 +34,7 @@ function App() {
         <button onClick={connect}>connect SNAP!</button>
         <button onClick={getKey}>generate key</button>
       </header>
+      <Dashboard />
     </div>
   );
 }

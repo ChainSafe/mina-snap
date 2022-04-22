@@ -1,0 +1,46 @@
+header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  svg{
+    &.connected{
+      width: 50%;
+      height: 50%;
+    }
+  }
+}
+.dashboard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #be5f5f;
+  background: url(./assets/background.webp) no-repeat center center fixed;
+
+}
+.dashboard-connected{
+  .user-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+  }
+  .sign-message{
+
+  }
+  .send-tx{
+
+  }
+}
+.box{
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem;
+  p{
+    color: #18181A;
+  }
+  
+}

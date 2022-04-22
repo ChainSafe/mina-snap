@@ -20,7 +20,7 @@
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
     "demo": "yarn run demo:local",
-    "demo:local": "concurrently  --raw --kill-others \"yarn run start:snap\" \"yarn run start:demo:local\"",
+    "demo:local": "concurrently  --raw --kill-others \"yarn run start:demo:local\"",
     "demo:watch": "concurrently  --raw --kill-others \"yarn run start:snap:watch \" \"yarn run start:demo:local\""
   },
   "devDependencies": {
