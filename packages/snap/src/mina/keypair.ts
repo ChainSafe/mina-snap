@@ -1,45 +1,44 @@
 import Client from "mina-signer";
-import {Keypair, Wallet } from "src/interfaces";
-import {deriveBIP44AddressKey, JsonBIP44CoinTypeNode} from "@metamask/key-tree";
-import bs58 from "bs58";
+import {
+  deriveBIP44AddressKey,
+  JsonBIP44CoinTypeNode,
+} from "@metamask/key-tree";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import bs58 from "bs58check";
+import { Keypair } from "mina-signer/dist/src/TSTypes";
+import { SnapProvider } from "@metamask/snap-types";
 
-const derivationPath = "m/44'/12586'/0'/0/0";
+const cointType = 12586;
 
-const t = 'EKDmEM8C4yqASzmKL1rRYj45vGUbheQXV1xCsW4Cxj6sGPt1XS1x';
-
-// privateKey: 'EKEC9T7ayE1M46ch9v6Nxwyq69zJ63kxtT6CqL6LqhixQLKbiWyG'
-// publicKey: 'B62qkHxCsZGbcsjPXT19fHHmynemKnCPWUH9yPzp59gWwQuSeakERfq'
-
-export async function getKeypair(client: Client, wallet: Wallet): Promise<Keypair> {
-  console.warn(client.genKeys());
-
-  const [, , coinType, account, change, addressIndex] = derivationPath.split('/');
-  const bip44Code = coinType.replace("\'", "");
-
-  console.warn('bip44Code', bip44Code);
-
-  const bip44Node = await wallet.request({
-    method: `snap_getBip44Entropy_${bip44Code}`,
-    params: []
-  }) as JsonBIP44CoinTypeNode;
-
-  console.warn('bip44Node', bip44Node);
+export async function getKeypair(
+  client: Client,
+  wallet: SnapProvider
+): Promise<Keypair> {
+  const bip44Node = (await wallet.request({
+    method: `snap_getBip44Entropy_${cointType}`,
+    params: [],
+  })) as JsonBIP44CoinTypeNode;
 
   const extendedPrivateKey = deriveBIP44AddressKey(bip44Node, {
-    account: parseInt(account),
-    address_index: parseInt(addressIndex),
-    change: parseInt(change),
+    account: 0,
+    address_index: 0,
+    change: 0,
   });
 
-  console.warn('extendedPrivateKey', extendedPrivateKey);
+  const extendedPrivateKeyShort = extendedPrivateKey.slice(0, 32);
+  extendedPrivateKeyShort[0] &= 0x3f;
 
-  const privateKey = bs58.encode(extendedPrivateKey).substring(0, 52);
-  console.warn('privateKey', privateKey);
-  const publicKey = client.derivePublicKey(privateKey);
+  const childPrivateKey = reverseBytes(extendedPrivateKeyShort);
+  const privateKey = new Uint8Array([...[90, 1], ...childPrivateKey]);
+  const privateKeyEncoded = bs58.encode(privateKey);
+  const publicKey = client.derivePublicKey(privateKeyEncoded);
 
-  console.warn({ privateKey, publicKey });
-
-  console.warn(client.verifyKeypair({ privateKey, publicKey }));
-
-  return { privateKey, publicKey };
+  return { privateKey: privateKeyEncoded, publicKey };
 }
+
+const reverseBytes = (bytes: any) => {
+  const uint8 = new Uint8Array(bytes);
+  const reversedBytes = new Buffer(uint8.reverse());
+  return reversedBytes;
+};

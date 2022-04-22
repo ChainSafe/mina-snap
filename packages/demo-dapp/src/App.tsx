@@ -17,14 +17,13 @@ const connect = async () => {
 
 const getKey = async () => {
   // @ts-ignore
-  const a = await window.ethereum.request({
+  console.log(await window.ethereum.request({
     method: 'wallet_invokeSnap',
     params: [
       defaultSnapId,
-      { method: "mina_getAddress" }
+      { method: "mina_getPublicKey" }
     ]
-  });
-  console.log(a);
+  }));
 };
 
 function App() {

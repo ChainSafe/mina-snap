@@ -48,7 +48,7 @@
     "@metamask/key-tree": "^3.0.1",
     "@metamask/providers": "^8.1.1",
     "@metamask/snap-types": "^0.10.7",
-    "bs58": "^5.0.0",
+    "bs58check": "^2.1.2",
     "common-shakeify": "^0.6.2",
     "mina-signer": "^1.1.0"
   }

@@ -1,6 +1,6 @@
+import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
 import { Message, Signed } from "mina-signer/dist/src/TSTypes";
-import { Wallet } from "../interfaces";
 import { getKeypair } from "../mina/keypair";
 import { showConfirmationDialog } from "../prompts/confirmation";
 import { messageCreator } from "../prompts/message";
@@ -12,7 +12,7 @@ export type SignMessageResponse = {
 };
 
 export async function signMessage(
-  wallet: Wallet,
+  wallet: SnapProvider,
   client: Client,
   message: string
 ): Promise<SignMessageResponse> {
