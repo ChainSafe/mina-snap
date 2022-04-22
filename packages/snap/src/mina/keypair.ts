@@ -37,7 +37,7 @@ export async function getKeypair(
   return { privateKey: privateKeyEncoded, publicKey };
 }
 
-const reverseBytes = (bytes: any) => {
+const reverseBytes = (bytes: Uint8Array) => {
   const uint8 = new Uint8Array(bytes);
   const reversedBytes = new Buffer(uint8.reverse());
   return reversedBytes;

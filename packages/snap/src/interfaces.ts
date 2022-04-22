@@ -1,4 +1,4 @@
-import { Network, PrivateKey, PublicKey } from "mina-signer/dist/src/TSTypes";
+import { Network } from "mina-signer/dist/src/TSTypes";
 
 export type MetamaskState = {
   mina: {
