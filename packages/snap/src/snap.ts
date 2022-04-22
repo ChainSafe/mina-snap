@@ -44,6 +44,19 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     default:
       throw new Error("Unsupported network error");
   }
+
+  /*
+  const client = new Client({ network: "mainnet" });
+
+  switch (request.method) {
+    case "key": {
+      // Generate keys
+      const keypair = client.genKeys();
+
+      console.warn(keypair);
+    }
+  }
+  */
 });
 
 export {};
