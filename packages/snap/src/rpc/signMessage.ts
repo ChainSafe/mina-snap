@@ -1,10 +1,10 @@
+import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
-import { Message, Signed } from "mina-signer/dist/src/TSTypes";
-import { Wallet } from "src/interfaces";
-import { getKeypair } from "src/mina/keypair";
+import type { Message, Signed } from "mina-signer/dist/src/TSTypes";
+import { getKeypair } from "../mina/keypair";
 
 export function signMessage(
-  wallet: Wallet,
+  wallet: SnapProvider,
   client: Client,
   message: string
 ): Signed<Message> {

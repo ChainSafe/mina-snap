@@ -1,13 +1,14 @@
 import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
 import { EmptyMetamaskState } from "./interfaces";
+import { getPublicKey } from "./rpc/getPublicKey";
 import { signMessage } from "./rpc/signMessage";
 
 declare const wallet: SnapProvider;
 
 export enum Methods {
   Configure = "mina_configure",
-  GetAddress = "mina_getAddress",
+  GetPublicKey = "mina_getPublicKey",
   GetBalance = "mina_getBalance",
   SignMessage = "mina_signMessage",
   SendMessage = "mina_sendMessage",
@@ -35,11 +36,11 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
 
   switch (request.method) {
     case Methods.Configure:
-      break;
-    case Methods.GetAddress:
-      break;
+      throw new Error("Unsupported network error");
+    case Methods.GetPublicKey:
+      return getPublicKey(wallet, client);
     case Methods.GetBalance:
-      break;
+      throw new Error("Unsupported network error");
     case Methods.SignMessage:
       return signMessage(
         wallet,
@@ -47,7 +48,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
         (request.params as { message: string }).message
       );
     case Methods.SendMessage:
-      break;
+      throw new Error("Unsupported network error");
     default:
       throw new Error("Unsupported network error");
   }
