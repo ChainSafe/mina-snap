@@ -1,5 +1,6 @@
 import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
+import { GraphqlAPI } from "./graphql/api";
 import { EmptyMetamaskState, MetamaskState } from "./interfaces";
 import { configure } from "./rpc/configure";
 import { signMessage } from "./rpc/signMessage";
@@ -33,6 +34,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     });
   }
   let client = new Client({ network: state.mina.network });
+  const api = new GraphqlAPI("https://devnet.graphql.minaexplorer.com/");
 
   switch (request.method) {
     case Methods.Configure:
@@ -44,7 +46,6 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.GetAddress:
       throw new Error("");
     case Methods.GetBalance:
-      throw new Error("");
     case Methods.SignMessage:
       return await signMessage(
         wallet,
