@@ -41,7 +41,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.GetBalance:
       break;
     case Methods.SignMessage:
-      return signMessage(
+      return await signMessage(
         wallet,
         client,
         (request.params as { message: string }).message
