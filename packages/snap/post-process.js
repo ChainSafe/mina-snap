@@ -64,5 +64,13 @@ bundleString = bundleString.replaceAll(
     "bGk=c6",
     "bGk=globalThis",
   );
+bundleString = bundleString.replaceAll(
+    "global",
+    "globalThis",
+  );
+bundleString = bundleString.replaceAll(
+    "globalThisThis",
+    "globalThis",
+);
 
 fs.writeFileSync(bundlePath, bundleString);
