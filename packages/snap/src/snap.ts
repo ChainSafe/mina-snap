@@ -37,16 +37,15 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
 
   switch (request.method) {
     case Methods.Configure:
-      throw new Error("Unsupported network error");
-    case Methods.GetPublicKey:
-      return getPublicKey(wallet, client);
-    case Methods.GetBalance:
-      throw new Error("Unsupported network error");
       const newState = await configure(
         wallet,
         (request.params as { network: string }).network
       );
       client = new Client({ network: newState.mina.network });
+    case Methods.GetPublicKey:
+      return getPublicKey(wallet, client);
+    case Methods.GetBalance:
+      throw new Error("Unsupported network error");
     case Methods.GetBalance:
       throw new Error("");
     case Methods.SignMessage:
