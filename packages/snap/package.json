@@ -14,7 +14,7 @@
     "prebuild": "rm -rf build && rm -rf dist",
     "build": "yarn run build:tsc && yarn run build:snap",
     "build:tsc": "tsc -p tsconfig.build.json --pretty --outDir build",
-    "build:snap": "yarn build:snap:bundle && node ./post-process.js && mm-snap manifest --fix && yarn build:snap:eval",
+    "build:snap": "yarn build:snap:bundle && node ./post-process.js && mm-snap manifest --fix",
     "build:snap:bundle": "mm-snap build --verboseErrors --src build/index.js  --stripComments --eval false",
     "build:snap:eval": "mm-snap eval -b dist/bundle.js --verboseErrors",
     "watch": "concurrently  --raw --kill-others \"yarn run watch:tsc\" \"yarn run watch:snap\" \"yarn run serve\"",

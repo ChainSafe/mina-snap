@@ -13,10 +13,13 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
 
   const client = new Client({ network: "mainnet" });
 
-  // Generate keys
-  const keypair = client.genKeys();
-
   switch (request.method) {
+    case 'key': {
+      // Generate keys
+      const keypair = client.genKeys();
+
+      console.warn(keypair);
+    }
     default:
       throw new Error("Unsupported network error");
   }

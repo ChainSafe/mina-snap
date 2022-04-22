@@ -1,23 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+export const defaultSnapId = 'local:http://localhost:8081';
+
+const connect = async () => {
+  // @ts-ignore
+  await window.ethereum.request({
+    method: "wallet_enable",
+    params: [
+      {
+        [`wallet_snap_${defaultSnapId}`]: {version: "latest"},
+      },
+    ],
+  });
+};
+
+const getKey = async () => {
+  // @ts-ignore
+  await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: [
+      defaultSnapId,
+      { method: "key" }
+    ]
+  });
+};
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={connect}>connect SNAP!</button>
+        <button onClick={getKey}>generate key</button>
       </header>
     </div>
   );
