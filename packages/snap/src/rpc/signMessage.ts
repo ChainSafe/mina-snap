@@ -17,7 +17,7 @@ export async function signMessage(
   message: string
 ): Promise<SignMessageResponse> {
   try {
-    const keypair = getKeypair(client, wallet);
+    const keypair = await getKeypair(client, wallet);
 
     const confirmation = await showConfirmationDialog(wallet, {
       description: `It will be signed with address: ${keypair.publicKey}`,

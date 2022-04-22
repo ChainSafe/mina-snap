@@ -2,7 +2,10 @@ import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
 import { getKeypair } from "../mina/keypair";
 
-export function getPublicKey(wallet: SnapProvider, client: Client): string {
-  const keypair = getKeypair(client, wallet);
+export async function getPublicKey(
+  wallet: SnapProvider,
+  client: Client
+): Promise<string> {
+  const keypair = await getKeypair(client, wallet);
   return keypair.publicKey;
 }

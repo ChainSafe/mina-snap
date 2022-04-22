@@ -43,7 +43,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
       );
       client = new Client({ network: newState.mina.network });
     case Methods.GetPublicKey:
-      return getPublicKey(wallet, client);
+      return await getPublicKey(wallet, client);
     case Methods.GetBalance:
       throw new Error("Unsupported network error");
     case Methods.GetBalance:
