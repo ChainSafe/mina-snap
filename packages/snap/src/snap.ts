@@ -1,7 +1,9 @@
 import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
-import { EmptyMetamaskState } from "./interfaces";
 import {getKeypair} from "./mina/keypair";
+import { EmptyMetamaskState, MetamaskState } from "./interfaces";
+import { configure } from "./rpc/configure";
+import { signMessage } from "./rpc/signMessage";
 
 declare const wallet: SnapProvider;
 
@@ -21,31 +23,38 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     throw new Error("Unsupported request.method");
   }
 
-  const state = await wallet.request({
+  const state: MetamaskState = (await wallet.request({
     method: "snap_manageState",
     params: ["get"],
-  });
+  })) as MetamaskState;
   if (!state) {
     await wallet.request({
       method: "snap_manageState",
       params: ["update", EmptyMetamaskState()],
     });
   }
-  const client = new Client({ network: "mainnet" });
+  let client = new Client({ network: state.mina.network });
 
   switch (request.method) {
     case Methods.Configure:
-      return '';
+      const newState = await configure(
+        wallet,
+        (request.params as { network: string }).network
+      );
+      client = new Client({ network: newState.mina.network });
     case Methods.GetAddress:
       const keypair = await getKeypair(client, wallet);
-      console.warn(keypair);
-      return '';
+      return keypair.publicKey;
     case Methods.GetBalance:
-      return '';
+      throw new Error("");
     case Methods.SignMessage:
-      return '';
+      return await signMessage(
+        wallet,
+        client,
+        (request.params as { message: string }).message
+      );
     case Methods.SendMessage:
-      return '';
+      throw new Error("");
     default:
       throw new Error("Unsupported network error");
   }
