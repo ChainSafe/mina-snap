@@ -1,6 +1,6 @@
 import { SnapProvider } from "@metamask/snap-types";
 import { Maybe } from "@metamask/providers/dist/utils";
-import {MetamaskState} from "../types";
+import { MetamaskState } from "../types";
 
 export const getState = async (
   wallet: SnapProvider
