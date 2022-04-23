@@ -2,9 +2,9 @@ import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
 import { GraphqlAPI } from "./graphql/api";
 import { getPublicKey } from "./rpc/getPublicKey";
-import { EmptyMetamaskState, MetamaskState } from "./interfaces";
 import { configure } from "./rpc/configure";
 import { signMessage } from "./rpc/signMessage";
+import { getState } from "./mina/state";
 
 declare const wallet: SnapProvider;
 
@@ -14,6 +14,7 @@ export enum Methods {
   GetBalance = "mina_getBalance",
   SignMessage = "mina_signMessage",
   SendMessage = "mina_sendMessage",
+  SendStakeDelegation = "mina_sendStakeDelegation",
 }
 
 wallet.registerRpcMessageHandler(async (origin, request) => {
@@ -24,31 +25,20 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     throw new Error("Unsupported request.method");
   }
 
-  const state: MetamaskState = (await wallet.request({
-    method: "snap_manageState",
-    params: ["get"],
-  })) as MetamaskState;
-  if (!state) {
-    await wallet.request({
-      method: "snap_manageState",
-      params: ["update", EmptyMetamaskState()],
-    });
-  }
-  let client = new Client({ network: state.mina.network });
+  const state = await getState(wallet);
+  const client = new Client({ network: state.mina.network });
   const api = new GraphqlAPI("https://devnet.graphql.minaexplorer.com/");
 
   switch (request.method) {
     case Methods.Configure:
-      const newState = await configure(
+      return await configure(
         wallet,
         (request.params as { network: string }).network
       );
-      client = new Client({ network: newState.mina.network });
     case Methods.GetPublicKey:
-      return getPublicKey(wallet, client);
+      return await getPublicKey(wallet, client);
     case Methods.GetBalance:
-      throw new Error("Unsupported network error");
-    case Methods.GetBalance:
+      return await api.getBalance(await getPublicKey(wallet, client));
     case Methods.SignMessage:
       return await signMessage(
         wallet,
@@ -56,9 +46,13 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
         (request.params as { message: string }).message
       );
     case Methods.SendMessage:
-      throw new Error("Unsupported network error");
+      // client.signPayment(payment: Payment, privateKey: PrivateKey): Signed<Payment>;
+      throw new Error("WIP method");
+    case Methods.SendStakeDelegation:
+      // client.signStakeDelegation(stakeDelegation: StakeDelegation, privateKey: PrivateKey): Signed<StakeDelegation>;
+      throw new Error("WIP method");
     default:
-      throw new Error("Unsupported network error");
+      throw new Error("Unsupported method");
   }
 });
 
