@@ -115,7 +115,6 @@ export const Dashboard: FC = () => {
     if (result) toaster.success("Message Successfully verified");
     else toaster.danger("Failed to verify message");
     setIsLoading(false);
-    toaster.success("Message verified");
   }
 
   return <div className="dashboard">
