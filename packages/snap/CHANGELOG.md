@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.0 (2022-04-23)
+
+
+### Features
+
+* deploy to gh page ([#20](https://github.com/ChainSafe/mina-snap/issues/20)) ([74f209c](https://github.com/ChainSafe/mina-snap/commit/74f209cb8df4b875cb65364d8538a674a98940b8))
+* get public key ([#7](https://github.com/ChainSafe/mina-snap/issues/7)) ([eeeef82](https://github.com/ChainSafe/mina-snap/commit/eeeef8245b93543ed2d7052d513b866467167950))
+* implement verify message ([#19](https://github.com/ChainSafe/mina-snap/issues/19)) ([d98b266](https://github.com/ChainSafe/mina-snap/commit/d98b266d89e9fbdbf3d68b58536e33875b4615a1))
+* keypair from entropy ([#8](https://github.com/ChainSafe/mina-snap/issues/8)) ([4f4e39a](https://github.com/ChainSafe/mina-snap/commit/4f4e39a8e7894dd04dd4c87e403db59a50d0b975))
+* send transaction ([#34](https://github.com/ChainSafe/mina-snap/issues/34)) ([231c1c0](https://github.com/ChainSafe/mina-snap/commit/231c1c02d40c8b64f9d297af01741af67b5a1ee4))
+* sign payment ([#26](https://github.com/ChainSafe/mina-snap/issues/26)) ([85c562f](https://github.com/ChainSafe/mina-snap/commit/85c562f54a03d2fb3172d0a93926a39f59155d50))
+
+
+### Bug Fixes
+
+* ci ([#14](https://github.com/ChainSafe/mina-snap/issues/14)) ([d492ff1](https://github.com/ChainSafe/mina-snap/commit/d492ff103df3516690b18a32b24595af401ece8e))
+
 ### [2.3.3](https://github.com/ChainSafe/filsnap/compare/filsnap-v2.3.2...filsnap-v2.3.3) (2022-04-19)
 
 
