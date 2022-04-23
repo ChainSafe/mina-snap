@@ -2,11 +2,11 @@ import { Button, Heading, Pane, Spinner, TextInput, toaster } from "evergreen-ui
 import { FC, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getSignMessage } from "./services/snap";
+import { enableSnap, getSignedMessage, sendTransaction } from "./services/snap";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
-  // TODO 
+  // TODO
   const [userAddress, setUserAddress] = useState("B62qjSzhoBsUKNKALCJ5XeG5NCS3tR1WUFof7n82def1mquxXhrFaSF")
   const [userBalance, setUserBalance] = useState("909302")
 
@@ -39,7 +39,7 @@ export const Dashboard: FC = () => {
   }
   const signMessage = async () => {
     setIsLoading(true)
-    const signMessageResponse = await getSignMessage(signMessageData);
+    const signMessageResponse = await getSignedMessage(signMessageData);
     console.log(signMessageResponse)
     setIsLoading(false)
     toaster.success(`Sign message: ${signMessageResponse}`);
@@ -49,9 +49,12 @@ export const Dashboard: FC = () => {
   const sendTxOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSendTxData({...sendTxData, [e.target.name]: e.target.value})
   }
-  const sendTx = () => {
-    //TODO
-    toaster.success("Message sent");
+  const sendTx = async () => {
+    setIsLoading(true)
+    const sendTransactionResponse = await sendTransaction(sendTxData);
+    console.log(sendTransactionResponse)
+    setIsLoading(false)
+    toaster.success(`Sent transaction: ${sendTransactionResponse}`);
   }
 
   //--VERIFY MESSAGE
@@ -79,7 +82,7 @@ export const Dashboard: FC = () => {
   return <div className="dashboard">
     {
       isLoading && <div className="spinner-container"><Spinner size={100}/></div>
-      
+
     }
     <header>
       <h1 >Mina Snap</h1>

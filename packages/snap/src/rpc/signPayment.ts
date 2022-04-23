@@ -27,6 +27,9 @@ export async function signPayment(
   try {
     const state = await getState(wallet);
     const kp = await getKeypair(client, wallet);
+
+    console.log(payment);
+
     const confirmation = await showConfirmationDialog(wallet, {
       description: `It will be signed with address: ${kp.publicKey}`,
       prompt: `Do you want to sign this payment?`,
