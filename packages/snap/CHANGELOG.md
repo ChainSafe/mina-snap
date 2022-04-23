@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.0](https://github.com/ChainSafe/mina-snap/compare/v1.2.0...v1.3.0) (2022-04-23)
+
+
+### Features
+
+* store transactions in state ([#40](https://github.com/ChainSafe/mina-snap/issues/40)) ([b38c418](https://github.com/ChainSafe/mina-snap/commit/b38c4182da42c651e3c82c31ddddbd69f1e5685f))
+
+
+### Bug Fixes
+
+* remove transaction state ([#46](https://github.com/ChainSafe/mina-snap/issues/46)) ([ee9412e](https://github.com/ChainSafe/mina-snap/commit/ee9412ea3ab8d3a90e6197201f12325667bab06c))
+
+
+### Miscellaneous
+
+* lint fix for verify ([#51](https://github.com/ChainSafe/mina-snap/issues/51)) ([14e1030](https://github.com/ChainSafe/mina-snap/commit/14e1030fc2f882bddebac06a427d7fab53e29705))
+
 ## [1.2.0](https://github.com/ChainSafe/mina-snap/compare/v1.1.0...v1.2.0) (2022-04-23)
 
 
