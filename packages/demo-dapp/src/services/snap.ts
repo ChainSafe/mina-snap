@@ -19,7 +19,7 @@ export const enableSnap = async (): Promise<true> => {
     });
 
     // wait to load snap and return true on finish
-    for (; ;) {
+    for (;;) {
         try {
             if (await pingSnap()) return true;
         } catch {
@@ -38,6 +38,7 @@ export enum MinaRPCMethods {
     GetPublicKey = "mina_getPublicKey",
     GetBalance = "mina_getBalance",
     SignMessage = "mina_signMessage",
+    VerifyMessage = "mina_verifyMessage",
     SendMessage = "mina_sendMessage",
     SendStakeDelegation = "mina_sendStakeDelegation",
 }
@@ -55,9 +56,12 @@ const pingSnap = (): Promise<true> => sendSnapMethod(MinaRPCMethods.Ping);
 
 export const getPublicKey = () => sendSnapMethod(MinaRPCMethods.GetPublicKey);
 
-export const getSignMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
+export const getSignedMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
 
 export const setNetwork = (network: string) => sendSnapMethod(MinaRPCMethods.Configure, { network })
+
+export const verifyMessage = (field: string, scalar: string, publicKey: string, message: string) =>
+    sendSnapMethod(MinaRPCMethods.Configure, { field, scalar, publicKey, message });
 
 //////////////////////////////////////
 //// Helpers
