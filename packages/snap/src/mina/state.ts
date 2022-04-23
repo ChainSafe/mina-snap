@@ -41,7 +41,11 @@ export const updateTransactions = async (
   tx: unknown
 ): Promise<void> => {
   const state = await getState(wallet);
-  state.transactions.push(tx);
+  if (!state.transactions) {
+    state.transactions = [];
+  }
+
+  state.transactions.unshift(tx);
   await wallet.request({
     method: "snap_manageState",
     params: ["update", state],
