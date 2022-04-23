@@ -51,22 +51,15 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.Ping:
       return true;
     case Methods.Configure:
-      verifyParams(params,{ network: 'string' });
-      return await configure(
-        wallet,
-          params.network
-      );
+      verifyParams(params, { network: "string" });
+      return await configure(wallet, params.network);
     case Methods.GetPublicKey:
       return await getPublicKey(wallet, client);
     case Methods.GetAccount:
       return await api.getAccount(await getPublicKey(wallet, client));
     case Methods.SignMessage:
-      verifyParams(params,{ message: 'string' });
-      return await signMessage(
-        wallet,
-        client,
-        params.message,
-      );
+      verifyParams(params, { message: "string" });
+      return await signMessage(wallet, client, params.message);
     case Methods.SendTransaction:
       return await sendTransaction(
         wallet,
@@ -75,14 +68,19 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
         request.params as PaymentParams
       );
     case Methods.VerifyMessage:
-      verifyParams(params,{ field: 'string', scalar: 'string', publicKey: 'string', message: 'string' });
+      verifyParams(params, {
+        field: "string",
+        scalar: "string",
+        publicKey: "string",
+        message: "string",
+      });
       return await verifyMessage(
         wallet,
         client,
         params.field,
         params.scalar,
         params.publicKey,
-        params.message,
+        params.message
       );
     case Methods.SendStakeDelegation:
       // client.signStakeDelegation(stakeDelegation: StakeDelegation, privateKey: PrivateKey): Signed<StakeDelegation>;

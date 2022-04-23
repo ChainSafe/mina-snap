@@ -1,6 +1,5 @@
 import { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
-import { Payment, Signed } from "mina-signer/dist/src/TSTypes";
 import { ExplorerAPI } from "src/api/api";
 import { getKeypair } from "../mina/keypair";
 import { getState, updateNonce } from "../mina/state";
@@ -59,14 +58,14 @@ export async function sendTransaction(
     };
     const signedPayment = client.signPayment(pymn, kp.privateKey);
 
-    console.log("SIGNED PAYMENT");
-    console.log(client.verifyPayment(signedPayment));
-
     const tx = await api.broadcastTx(
       kp.publicKey,
       signedPayment.signature,
       pymn
     );
+    if ((tx as { error: string }).error) {
+      throw new Error((tx as { error: string }).error);
+    }
 
     await updateNonce(wallet, state.nonce + 1);
     return {

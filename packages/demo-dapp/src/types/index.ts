@@ -12,3 +12,16 @@ export interface ISignMessageResponse {
     }
   };
 }
+
+
+export type ITransactionResponse = {
+    confirmed: boolean;
+    error: Error;
+    tx: {
+        result: {
+            payment: {
+              hash: string;
+            }
+        }
+    }
+}
