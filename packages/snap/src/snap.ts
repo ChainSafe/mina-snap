@@ -35,7 +35,13 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
 
   if (!state.nonce) {
     const account = await api.getAccount(await getPublicKey(wallet, client));
-    await updateNonce(wallet, account.account.nonce);
+    let nonce: number;
+    if (account.account.nonce == null) {
+      nonce = 0;
+    } else {
+      nonce = account.account.nonce;
+    }
+    await updateNonce(wallet, nonce);
   }
 
   switch (request.method) {

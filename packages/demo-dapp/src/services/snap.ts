@@ -65,7 +65,7 @@ export const getPublicKey = () => sendSnapMethod(MinaRPCMethods.GetPublicKey);
 
 export const getSignedMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
 
-export const sendTransaction = (tx: Tx) => sendSnapMethod(MinaRPCMethods.SendMessage, { tx });
+export const sendTransaction = (tx: Tx) => sendSnapMethod(MinaRPCMethods.SendMessage, { ...tx });
 
 export const setNetwork = (network: string) => sendSnapMethod(MinaRPCMethods.Configure, { network })
 

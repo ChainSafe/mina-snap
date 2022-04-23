@@ -41,6 +41,7 @@ export async function signPayment(
         { message: "to", value: payment.to },
       ]),
     });
+    console.log(confirmation);
     if (!confirmation) {
       return {
         confirmed: false,
@@ -49,6 +50,8 @@ export async function signPayment(
       };
     }
 
+    console.log(state.nonce);
+    console.log("before sign paymnet");
     const signedPayment = client.signPayment(
       {
         amount: payment.amount,
@@ -60,13 +63,18 @@ export async function signPayment(
       },
       kp.privateKey
     );
+
+    console.log("before nonce");
     await updateNonce(wallet, state.nonce + 1);
+    console.log("after update nonce");
+
     return {
       confirmed: true,
       error: null,
       signedPayment: signedPayment,
     };
   } catch (error) {
+    console.log(error);
     return {
       confirmed: false,
       error: error,
