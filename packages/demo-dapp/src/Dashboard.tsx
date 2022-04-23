@@ -2,10 +2,11 @@ import { Button, Spinner, TextInput, TickCircleIcon, toaster } from "evergreen-u
 import { FC, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getAccount, getSignMessage, isMetamaskSnapsSupported, sendTransaction } from "./services/snap";
+import { enableSnap, getAccount, getSignMessage, isMetamaskSnapsSupported, sendTransaction, verifyMessage } from "./services/snap";
 import { ISignMessageResponse, ITransactionResponse } from "./types";
 import { VerifyMessage } from "./components/VerifyMessage";
 import useInterval from "use-interval";
+import { SendTx } from "./components/SendTx";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
@@ -129,8 +130,12 @@ export const Dashboard: FC = () => {
   const verifyMessageOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVerifyMessageData({ ...verifyMessageData, [e.target.name]: e.target.value })
   }
-  const verifyMessage = () => {
-    //TODO
+  const verifyMessageSubmit = async () => {
+    setIsLoading(true);
+    const result = await verifyMessage(verifyMessageData.field, verifyMessageData.scalar, verifyMessageData.publicKey, verifyMessageData.message);
+    if (result) toaster.success("Message Successfully verified");
+    else toaster.danger("Failed to verify message");
+    setIsLoading(false);
     toaster.success("Message verified");
   }
 
@@ -178,21 +183,17 @@ export const Dashboard: FC = () => {
           </div>
         </div>
         <div className="row">
-          <div className="send-tx box">
-            <h2>Send message</h2>
-            <h3>To</h3>
-            <TextInput name="to" onChange={sendTxOnChange} />
-            <h3>Memo</h3>
-            <TextInput name="memo" onChange={sendTxOnChange} />
-            <h3>Amount</h3>
-            <TextInput name="amount" onChange={sendTxOnChange} />
-            <h3>Fee</h3>
-            <TextInput name="fee" onChange={sendTxOnChange} />
-            <Button disabled={isLoading} onClick={sendTx}>Send</Button>
-          </div>
-          <VerifyMessage />
+        <SendTx 
+          sendTxOnChange={sendTxOnChange}
+          sendTx={sendTx}
+          isLoading={isLoading}
+        />
+        <VerifyMessage 
+          verifyMessageChange={verifyMessageOnChange}
+          verifyMessageSubmit={verifyMessageSubmit}
+          isLoading={isLoading}
+        />
         </div>
-
       </div>
     }
   </div>
