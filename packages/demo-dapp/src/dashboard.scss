@@ -27,12 +27,13 @@ header{
   background: url(./assets/background.webp);
   background-size: cover;
   .connect-button{
-    width: 11rem;
+    width: 19rem;
     height: 3rem;
     font-size: 1.25rem;
     font-weight: 700;
     border-radius: 0.75rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
   }
   .spinner-container{
     position: fixed;
