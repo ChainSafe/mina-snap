@@ -92,11 +92,15 @@ header{
   flex-direction: column;
   justify-content: space-between;
   width: auto;
+  .box{
+    min-width: 32.5rem;
+  }
   @media (min-width: 80rem) {
     flex-direction: row;
     width: 80rem;
     .box{
       width: 50%;
+      min-width: none;
     }
   }
 
