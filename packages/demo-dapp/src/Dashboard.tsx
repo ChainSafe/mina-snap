@@ -2,12 +2,12 @@ import { Button, CornerDialog, Heading, Pane, Spinner, TextInput, toaster } from
 import { FC, Fragment, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getSignedMessage } from "./services/snap";
+import { enableSnap, getSignedMessage, sendTransaction } from "./services/snap";
 import { ISignMessageResponse } from "./types";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
-  // TODO 
+  // TODO
   const [userAddress, setUserAddress] = useState("B62qjSzhoBsUKNKALCJ5XeG5NCS3tR1WUFof7n82def1mquxXhrFaSF")
   const [userBalance, setUserBalance] = useState("909302")
 
@@ -57,9 +57,12 @@ export const Dashboard: FC = () => {
   const sendTxOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSendTxData({...sendTxData, [e.target.name]: e.target.value})
   }
-  const sendTx = () => {
-    //TODO
-    toaster.success("Message sent");
+  const sendTx = async () => {
+    setIsLoading(true)
+    const sendTransactionResponse = await sendTransaction(sendTxData);
+    console.log(sendTransactionResponse)
+    setIsLoading(false)
+    toaster.success(`Sent transaction: ${sendTransactionResponse}`);
   }
 
   //--VERIFY MESSAGE

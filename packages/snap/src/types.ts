@@ -4,6 +4,7 @@ export type MetamaskState = {
   mina: {
     network: Network;
   };
+  nonce?: number;
 };
 
 export interface MessageRequest {

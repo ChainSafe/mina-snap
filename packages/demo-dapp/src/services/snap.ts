@@ -45,6 +45,13 @@ export enum MinaRPCMethods {
 
 type Params = { [key: string]: string | number | Params }
 
+export type Tx = {
+  to: string;
+  fee: string;
+  memo?: string;
+  amount: string;
+};
+
 async function sendSnapMethod<T>(method: MinaRPCMethods, params?: Params): Promise<T> {
     return await getEthereum().request({
         method: 'wallet_invokeSnap',
@@ -57,6 +64,8 @@ const pingSnap = (): Promise<true> => sendSnapMethod(MinaRPCMethods.Ping);
 export const getPublicKey = () => sendSnapMethod(MinaRPCMethods.GetPublicKey);
 
 export const getSignedMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
+
+export const sendTransaction = (tx: Tx) => sendSnapMethod(MinaRPCMethods.SendMessage, { tx });
 
 export const setNetwork = (network: string) => sendSnapMethod(MinaRPCMethods.Configure, { network })
 
