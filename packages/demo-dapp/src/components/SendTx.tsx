@@ -9,7 +9,7 @@ interface ISendTx {
 export const SendTx: React.FC<ISendTx> = ({sendTxOnChange, sendTx, isLoading}) => {
   return (
     <div className="send-tx box">
-    <h2>Send message</h2>a
+    <h2>Send message</h2>
     <h3>To</h3>
     <TextInput name="to" onChange={sendTxOnChange} />
     <h3>Memo</h3>

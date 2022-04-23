@@ -10,7 +10,7 @@ interface IVerifyMessage {
 export const VerifyMessage: React.FC<IVerifyMessage> = ({verifyMessageChange, verifyMessageSubmit, isLoading}) => {
   return (
     <div className="send-tx box">
-    <h2>Send message</h2>
+    <h2>Verify message</h2>
     <h3>Message</h3>
     <TextInput name="message" onChange={verifyMessageChange} />
     <h3>Public key</h3>
@@ -22,4 +22,4 @@ export const VerifyMessage: React.FC<IVerifyMessage> = ({verifyMessageChange, ve
     <Button disabled={isLoading} onClick={verifyMessageSubmit}>Send</Button>
   </div>
   )
-}
+};

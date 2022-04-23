@@ -19,7 +19,14 @@ export const enableSnap = async (): Promise<true> => {
         ],
     });
 
-    return true;
+    // wait to load snap and return true on finish
+    for (;;) {
+        try {
+            if (await pingSnap()) return true;
+        } catch {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+    }
 };
 
 //////////////////////////////////////
