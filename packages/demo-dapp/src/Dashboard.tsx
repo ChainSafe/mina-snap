@@ -2,12 +2,27 @@ import { Button, Heading, Pane, Spinner, TextInput, toaster } from "evergreen-ui
 import { FC, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap } from "./services/snap";
+import { enableSnap, getSignMessage } from "./services/snap";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
+  // TODO 
   const [userAddress, setUserAddress] = useState("B62qjSzhoBsUKNKALCJ5XeG5NCS3tR1WUFof7n82def1mquxXhrFaSF")
   const [userBalance, setUserBalance] = useState("909302")
+
+  const [signMessageData, setSignMessageData] = useState("");
+  const [sendTxData, setSendTxData] = useState({
+    to: "",
+    memo: "",
+    amount: "",
+    fee: ""
+  })
+  const [verifyMessageData, setVerifyMessageData] = useState({
+    message: "",
+    publicKey: "",
+    field: "",
+    scalar: ""
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -18,21 +33,36 @@ export const Dashboard: FC = () => {
     setSnapConnected(isConnected)
   }
 
-  const signMessage = () => {
-    //TODO
-    toaster.success("Message signed");
+  //--SIGN MESSAGE
+  const signMessageOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSignMessageData(e.target.value)
+  }
+  const signMessage = async () => {
+    setIsLoading(true)
+    const signMessageResponse = await getSignMessage(signMessageData);
+    console.log(signMessageResponse)
+    setIsLoading(false)
+    toaster.success(`Sign message: ${signMessageResponse}`);
   }
 
-  const sendMessage = () => {
+  //--SEND TRANSACTION
+  const sendTxOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSendTxData({...sendTxData, [e.target.name]: e.target.value})
+  }
+  const sendTx = () => {
     //TODO
     toaster.success("Message sent");
   }
 
+  //--VERIFY MESSAGE
+  const verifyMessageOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVerifyMessageData({...verifyMessageData, [e.target.name]: e.target.value})
+  }
   const verifyMessage = () => {
     //TODO
     toaster.success("Message verified");
   }
-
+  //TODO--user data
   // useEffect(() => {
   //   (async () => {
   //     // @ts-ignore
@@ -48,7 +78,7 @@ export const Dashboard: FC = () => {
 
   return <div className="dashboard">
     {
-      isLoading && <div className="spinner-container"><Spinner/></div>
+      isLoading && <div className="spinner-container"><Spinner size={100}/></div>
       
     }
     <header>
@@ -71,32 +101,34 @@ export const Dashboard: FC = () => {
           </div>
           <div className="sign-message box">
             <h3>Sign message</h3>
-            <TextInput></TextInput>
-            <Button onClick={signMessage}>Sign</Button>
+            <TextInput name="signMessage" onChange={signMessageOnChange}/>
+            <Button disabled={isLoading} onClick={signMessage}>Sign</Button>
           </div>
         </div>
         <div className="row">
         <div className="send-tx box">
           <h2>Send message</h2>
-          <h3>Recipient</h3>
-          <TextInput></TextInput>
+          <h3>To</h3>
+          <TextInput name="to" onChange={sendTxOnChange}/>
           <h3>Memo</h3>
-          <TextInput></TextInput>
+          <TextInput name="memo" onChange={sendTxOnChange}/>
           <h3>Amount</h3>
-          <TextInput></TextInput>
-          <Button onClick={sendMessage}>Send</Button>
+          <TextInput name="amount" onChange={sendTxOnChange}/>
+          <h3>Fee</h3>
+          <TextInput name="fee" onChange={sendTxOnChange}/>
+          <Button disabled={isLoading} onClick={sendTx}>Send</Button>
         </div>
         <div className="verify-message box">
           <h2>Verify message</h2>
           <h3>Message</h3>
-          <TextInput></TextInput>
+          <TextInput name="message" onChange={verifyMessageOnChange}/>
           <h3>Public key</h3>
-          <TextInput></TextInput>
+          <TextInput name="publicKey" onChange={verifyMessageOnChange}/>
           <h3>Field</h3>
-          <TextInput></TextInput>
+          <TextInput name="field" onChange={verifyMessageOnChange}/>
           <h3>Scalar</h3>
-          <TextInput></TextInput>
-          <Button onClick={verifyMessage}>Verify</Button>
+          <TextInput name="scalar" onChange={verifyMessageOnChange}/>
+          <Button disabled={isLoading} onClick={verifyMessage}>Verify</Button>
         </div>
         </div>
 
