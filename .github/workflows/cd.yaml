@@ -4,6 +4,23 @@ on:
     branches:
       - main
 jobs:
+  deploy-gh:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Install and Build 🔧 
+        run: |
+          yarn install --frozen-lockfile
+          yarn build:demo
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: gh-pages 
+          folder: packages/demo-dapp/build
   maybe-release:
     name: release
     runs-on: ubuntu-latest

@@ -16,6 +16,7 @@
     "start:demo:local": "REACT_APP_SNAP=local lerna run start --scope demo-dapp",
     "build": "yarn run build:local",
     "build:local": "REACT_APP_SNAP=local lerna run build",
+    "build:demo": "CI=false lerna run build --scope demo-dapp",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
