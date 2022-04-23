@@ -114,7 +114,7 @@ export const Dashboard: FC = () => {
     {
       isLoading && <div className="spinner-container"><Spinner size={100}/></div>
     }
-    <header>
+    <header className={cls({ connected: snapConnected })}>
       <h1 >Mina Snap</h1>
       <Logo className={cls({ connected: snapConnected })} />
     </header>
@@ -133,7 +133,7 @@ export const Dashboard: FC = () => {
             </div>
           </div>
           <div className="sign-message box">
-            <h3>Sign message</h3>
+            <h2>Sign message</h2>
             <TextInput name="signMessage" onChange={signMessageOnChange}/>
             <Button disabled={isLoading} onClick={signMessage}>Sign</Button>
           </div>
