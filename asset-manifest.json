@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.b656544b.css",
-    "main.js": "/static/js/main.80b05e0b.js",
-    "static/js/415.be8845d3.chunk.js": "/static/js/415.be8845d3.chunk.js",
-    "static/media/logo.svg": "/static/media/logo.89051483d297bf6da99f49da7db147d9.svg",
-    "static/media/background.webp": "/static/media/background.a61acecf7fb721b4d7c8.webp",
-    "index.html": "/index.html",
-    "main.b656544b.css.map": "/static/css/main.b656544b.css.map",
-    "main.80b05e0b.js.map": "/static/js/main.80b05e0b.js.map",
-    "415.be8845d3.chunk.js.map": "/static/js/415.be8845d3.chunk.js.map"
+    "main.css": "/mina-snap/static/css/main.ec4effd6.css",
+    "main.js": "/mina-snap/static/js/main.7fc5c9d0.js",
+    "static/js/415.be8845d3.chunk.js": "/mina-snap/static/js/415.be8845d3.chunk.js",
+    "static/media/logo.svg": "/mina-snap/static/media/logo.89051483d297bf6da99f49da7db147d9.svg",
+    "static/media/background.webp": "/mina-snap/static/media/background.a61acecf7fb721b4d7c8.webp",
+    "index.html": "/mina-snap/index.html",
+    "main.ec4effd6.css.map": "/mina-snap/static/css/main.ec4effd6.css.map",
+    "main.7fc5c9d0.js.map": "/mina-snap/static/js/main.7fc5c9d0.js.map",
+    "415.be8845d3.chunk.js.map": "/mina-snap/static/js/415.be8845d3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b656544b.css",
-    "static/js/main.80b05e0b.js"
+    "static/css/main.ec4effd6.css",
+    "static/js/main.7fc5c9d0.js"
   ]
 }
