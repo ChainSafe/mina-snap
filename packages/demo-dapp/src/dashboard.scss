@@ -5,12 +5,16 @@ header{
   flex-direction: column;
   h1{
     font-size: 4rem;
+    color: #ed6b48 !important;
   }
   svg{
     &.connected{
       width: 50%;
       height: 50%;
     }
+  }
+  &.connected{
+    margin: 2rem 0;
   }
 }
 .dashboard{
@@ -28,6 +32,7 @@ header{
     font-size: 1.25rem;
     font-weight: 700;
     border-radius: 0.75rem;
+    margin-top: 2rem;
   }
   .spinner-container{
     position: fixed;
@@ -62,14 +67,25 @@ header{
   min-height: 8rem;
   display: flex;
   flex-direction: column;
+  h2{
+    margin-bottom: 1rem;
+  }
   input{
     width: 100%;
-    margin: 0.5rem 0;
+    margin: 0  0 1rem 0;
   };
   p{
     color: #18181A;
   }
-  
+  button{
+    height: 2.5rem;
+    font-family: 'Ubuntu';
+    font-size: 1.25rem;
+  }
+  input{
+    font-family: 'Ubuntu';
+    font-size: 1rem;
+  }
 }
 .row{
   display: flex;
