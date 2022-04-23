@@ -3,8 +3,6 @@ import {
   deriveBIP44AddressKey,
   JsonBIP44CoinTypeNode,
 } from "@metamask/key-tree";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import bs58 from "bs58check";
 import { Keypair } from "mina-signer/dist/src/TSTypes";
 import { SnapProvider } from "@metamask/snap-types";
@@ -39,6 +37,5 @@ export async function getKeypair(
 
 const reverseBytes = (bytes: Uint8Array) => {
   const uint8 = new Uint8Array(bytes);
-  const reversedBytes = new Buffer(uint8.reverse());
-  return reversedBytes;
+  return new Buffer(uint8.reverse());
 };
