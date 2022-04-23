@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.2.0",
   "proposedName": "minasnap",
   "description": "The Mina snap.",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "https://github.com/Chainsafe/minasnap.git"
   },
   "source": {
-    "shasum": "IJvltw4cHT/GT72fYQt02VM/JMBaIB6dNnKhDn154y0=",
+    "shasum": "KNNReZfTQrJ6dE5SSHZDiT7Zp1nypxsLREbiRGWZRso=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

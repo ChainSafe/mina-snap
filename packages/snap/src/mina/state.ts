@@ -36,8 +36,21 @@ export const updateNonce = async (
   });
 };
 
+export const updateTransactions = async (
+  wallet: SnapProvider,
+  tx: unknown
+): Promise<void> => {
+  const state = await getState(wallet);
+  state.transactions.push(tx);
+  await wallet.request({
+    method: "snap_manageState",
+    params: ["update", state],
+  });
+};
+
 export const EmptyMetamaskState: () => MetamaskState = () => ({
   mina: {
     network: "testnet",
   },
+  transactions: [],
 });

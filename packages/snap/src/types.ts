@@ -5,6 +5,7 @@ export type MetamaskState = {
     network: Network;
   };
   nonce?: number;
+  transactions: unknown[];
 };
 
 export interface MessageRequest {
