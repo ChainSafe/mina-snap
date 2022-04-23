@@ -1,9 +1,10 @@
 import { Button, Spinner, TextInput, toaster } from "evergreen-ui";
-import { FC, Fragment, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getAccount, getPublicKey, getSignMessage, sendTransaction } from "./services/snap";
+import { enableSnap, getAccount, getSignMessage, sendTransaction } from "./services/snap";
 import { ISignMessageResponse } from "./types";
+import useInterval from "use-interval";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
@@ -26,6 +27,12 @@ export const Dashboard: FC = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+
+  useInterval(() => {
+    getAccount().then((account) => {
+      setUserBalance(account.account.balance.total);
+    }).catch()
+  }, 30000)
 
   useEffect(() => {
     if(!snapConnected) return;
