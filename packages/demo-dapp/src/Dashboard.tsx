@@ -13,6 +13,7 @@ export const Dashboard: FC = () => {
   const [isFlaskInstalled, setFlaskInstalled] = useState(false);
 
   const [signMessageResponse, setSignMessageResponse] = useState<ISignMessageResponse | null>(null)
+  const [transactionResponse, setTransactionResponse] = useState<ITransactionResponse | null>(null)
 
   const [signMessageData, setSignMessageData] = useState("");
   const [sendTxData, setSendTxData] = useState({
@@ -96,6 +97,7 @@ export const Dashboard: FC = () => {
       }
 
       setIsLoading(false);
+      setTransactionResponse(sendTransactionResponse);
       toaster.success(`Sent transaction: ${sendTransactionResponse.tx.result.payment.hash}`);
     } catch(error) {
       setIsLoading(false)
@@ -176,6 +178,21 @@ export const Dashboard: FC = () => {
         <p>{signMessageResponse.signature.signature.signature.field}</p>
         <p>Signature scalar</p>
         <p>{signMessageResponse.signature.signature.signature.scalar}</p>
+      </>}
+    </Dialog>
+    <Dialog
+      title="Transaction successfully sent!"
+      isShown={transactionResponse !== null}
+      onCloseComplete={() => setTransactionResponse(null)}
+      hasCancel={false}
+      confirmLabel="OK"
+    >
+      {transactionResponse && <>
+        <p>Transaction response</p>
+        {/* <p>{transactionResponse.tx.result.payment.hash}</p> */}
+        <a className="link" target="_blank" rel="noopener noreferrer"  href={`https://minaexplorer.com/transaction/${transactionResponse.tx.result.payment.hash}`}>
+        {transactionResponse.tx.result.payment.hash}
+          </a>
       </>}
     </Dialog>
   </div>
