@@ -1,8 +1,9 @@
-import { Button, Heading, Pane, Spinner, TextInput, toaster } from "evergreen-ui";
-import { FC, useEffect, useState } from "react";
+import { Button, CornerDialog, Heading, Pane, Spinner, TextInput, toaster } from "evergreen-ui";
+import { FC, Fragment, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getSignMessage } from "./services/snap";
+import { enableSnap, getSignedMessage } from "./services/snap";
+import { ISignMessageResponse } from "./types";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
@@ -39,10 +40,17 @@ export const Dashboard: FC = () => {
   }
   const signMessage = async () => {
     setIsLoading(true)
-    const signMessageResponse = await getSignMessage(signMessageData);
-    console.log(signMessageResponse)
-    setIsLoading(false)
-    toaster.success(`Sign message: ${signMessageResponse}`);
+    try{
+      const signMessageResponse = (await getSignedMessage(signMessageData)) as ISignMessageResponse;
+      setIsLoading(false)
+      if(signMessageResponse.confirmed === false) {
+        toaster.warning("Message not confirmed")
+      }
+      toaster.success(`Message signed successfully!: ${signMessageResponse.signature.data.message}`);
+    } catch {
+      setIsLoading(false)
+      toaster.danger("Error signing message!");
+    }
   }
 
   //--SEND TRANSACTION
@@ -79,7 +87,6 @@ export const Dashboard: FC = () => {
   return <div className="dashboard">
     {
       isLoading && <div className="spinner-container"><Spinner size={100}/></div>
-      
     }
     <header>
       <h1 >Mina Snap</h1>
