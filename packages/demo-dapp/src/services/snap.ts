@@ -1,5 +1,6 @@
 import { defaultSnapId } from "../config";
 import { getEthereum, hasMetaMask } from "../utils/ethereum";
+import {Account} from "../types";
 
 export const enableSnap = async (): Promise<true> => {
     if (!hasMetaMask()) {
@@ -28,6 +29,7 @@ export const enableSnap = async (): Promise<true> => {
 export enum MinaRPCMethods {
     Ping = "mina_ping",
     Configure = "mina_configure",
+    GetNetwork = "mina_getNetwork",
     GetPublicKey = "mina_getPublicKey",
     GetAccount = "mina_getAccount",
     SignMessage = "mina_signMessage",
@@ -56,25 +58,15 @@ const pingSnap = (): Promise<true> => sendSnapMethod(MinaRPCMethods.Ping);
 
 export const getPublicKey = () => sendSnapMethod(MinaRPCMethods.GetPublicKey) as Promise<string>;
 
-export type Account = {
-    account: {
-      publicKey: string;
-      balance: {
-        total: string;
-      };
-      nonce: number;
-    };
-  };
-
-
-
 export const getAccount = () => sendSnapMethod(MinaRPCMethods.GetAccount) as Promise<Account>;
 
 export const getSignMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
 
 export const sendTransaction = (tx: Tx) => sendSnapMethod(MinaRPCMethods.SendTransaction, { ...tx });
 
-export const setNetwork = (network: string) => sendSnapMethod(MinaRPCMethods.Configure, { network })
+export const setNetwork = (network: string) => sendSnapMethod(MinaRPCMethods.Configure, { network });
+
+export const getNetwork = (): Promise<string> => sendSnapMethod(MinaRPCMethods.GetNetwork);
 
 export const verifyMessage = (field: string, scalar: string, publicKey: string, message: string) =>
     sendSnapMethod(MinaRPCMethods.VerifyMessage, { field, scalar, publicKey, message });

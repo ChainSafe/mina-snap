@@ -25,3 +25,14 @@ export type ITransactionResponse = {
         }
     }
 }
+
+
+export type Account = {
+  account: {
+    publicKey: string;
+    balance: {
+      total: string;
+    };
+    nonce: number;
+  };
+};
