@@ -128,7 +128,7 @@ export const Dashboard: FC = () => {
       <>
         {
           isFlaskInstalled ?
-            <Button disabled={true} className="connect-button">Metamask Flask Installed <TickCircleIcon style={{ marginLeft: "0.1“rem" }} color="success" marginRight={16} /></Button>
+            <Button disabled={true} className="connect-button">Metamask Flask Installed <TickCircleIcon style={{ marginLeft: "0.2rem" }} color="success" /></Button>
             :
             <a
               className="connect-button"
