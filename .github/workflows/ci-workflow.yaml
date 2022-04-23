@@ -29,5 +29,3 @@ jobs:
         run: |
           echo "Snap manifest not updated: ${{ steps.verify-changed-files.outputs.changed_files }}"
           exit 1
-      - name: Run tests
-        run: yarn run test
