@@ -16,6 +16,7 @@ export enum Methods {
   Configure = "mina_configure",
   GetPublicKey = "mina_getPublicKey",
   GetAccount = "mina_getAccount",
+  GetTransactions = "mina_getTransactions",
   SignMessage = "mina_signMessage",
   VerifyMessage = "mina_verifyMessage",
   SendTransaction = "mina_sendTransaction",
@@ -67,12 +68,15 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
         api,
         request.params as PaymentParams
       );
+    case Methods.GetTransactions:
+      const txState = await getState(wallet);
+      return txState.transactions;
     case Methods.VerifyMessage:
       verifyParams(params, {
         field: "string",
-        scalar: "string",
-        publicKey: "string",
         message: "string",
+        publicKey: "string",
+        scalar: "string",
       });
       return await verifyMessage(
         wallet,
