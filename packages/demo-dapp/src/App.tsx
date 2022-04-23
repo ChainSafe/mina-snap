@@ -22,7 +22,7 @@ const getKey = async () => {
     method: 'wallet_invokeSnap',
     params: [
       defaultSnapId,
-      { method: "mina_getPublicKey" }
+      { method: "mina_getBalance" }
     ]
   }));
 };
