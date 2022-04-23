@@ -31,6 +31,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     throw new Error("Unsupported request.method");
   }
 
+  // eslint-ignore
   const params = request.params as any;
 
   const state = await getState(wallet);
@@ -52,7 +53,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.Ping:
       return true;
     case Methods.Configure:
-      verifyParams(params,{ network: ['undefined', 'string'] });
+      verifyParams(params, { network: ["undefined", "string"] });
       return await configure(wallet, params.network);
     case Methods.GetNetwork:
       return state.mina.network;
@@ -61,7 +62,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.GetAccount:
       return await api.getAccount(await getPublicKey(wallet, client));
     case Methods.SignMessage:
-      verifyParams(params,{ message: 'string' });
+      verifyParams(params, { message: "string" });
       return await signMessage(wallet, client, params.message);
     case Methods.SendTransaction:
       return await sendTransaction(
@@ -71,8 +72,20 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
         request.params as PaymentParams
       );
     case Methods.VerifyMessage:
-      verifyParams(params,{ field: 'string', scalar: 'string', publicKey: 'string', message: 'string' });
-      return await verifyMessage(wallet, client, params.field, params.scalar, params.publicKey, params.message);
+      verifyParams(params, {
+        field: "string",
+        message: "string",
+        publicKey: "string",
+        scalar: "string",
+      });
+      return await verifyMessage(
+        wallet,
+        client,
+        params.field,
+        params.scalar,
+        params.publicKey,
+        params.message
+      );
     case Methods.SendStakeDelegation:
       // client.signStakeDelegation(stakeDelegation: StakeDelegation, privateKey: PrivateKey): Signed<StakeDelegation>;
       throw new Error("WIP method");
