@@ -2,23 +2,38 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
+  deploy-gh:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Install and Build 🔧 
+        run: |
+          yarn install --frozen-lockfile
+          yarn build:demo
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: gh-pages 
+          folder: packages/demo-dapp/build
   maybe-release:
     name: release
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
 
         # you should probably do this after your regular CI checks passes
       - uses: google-github-actions/release-please-action@v3 # it will analyze commits and create PR with new version and updated CHANGELOG:md file. On merging it will create github release page with changelog
         id: release
         with:
-          command: manifest
-          token: ${{secrets.GITHUB_TOKEN}}
-          default-branch: master
           release-type: node
-          monorepo-tags: true
+          package-name: mina-snap
+          path: packages/snap
           changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}]'
       
       - uses: actions/checkout@v3
@@ -39,7 +54,9 @@ jobs:
       - run: yarn build
         if: ${{ steps.release.outputs.releases_created }}
 
-      - run: npx lerna publish from-package --no-push --no-private --no-verify-access --yes
+      - run: |
+          cd packages/snap
+          yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}} # use npm "Automation" token and put in Github repository secrets under "NPM_TOKEN"
         if: ${{ steps.release.outputs.releases_created }}

@@ -3,6 +3,9 @@ header{
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  h1{
+    font-size: 4rem;
+  }
   svg{
     &.connected{
       width: 50%;
@@ -17,10 +20,27 @@ header{
   justify-content: center;
   min-height: 100vh;
   background-color: #be5f5f;
-  background: url(./assets/background.webp) no-repeat center center fixed;
-
+  background: url(./assets/background.webp);
+  background-size: cover;
+  .connect-button{
+    width: 11rem;
+    height: 3rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-radius: 0.75rem;
+  }
+  .spinner-container{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+  }
 }
 .dashboard-connected{
+  button, input{
+    border-radius: 0.5rem;
+  }
   .user-data{
     display: flex;
     flex-direction: column;
@@ -36,11 +56,32 @@ header{
 }
 .box{
   background-color: white;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   padding: 1rem;
   margin: 1rem;
+  min-height: 8rem;
+  display: flex;
+  flex-direction: column;
+  input{
+    width: 100%;
+    margin: 0.5rem 0;
+  };
   p{
     color: #18181A;
   }
   
+}
+.row{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: auto;
+  @media (min-width: 80rem) {
+    flex-direction: row;
+    width: 80rem;
+    .box{
+      width: 50%;
+    }
+  }
+
 }

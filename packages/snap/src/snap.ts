@@ -6,6 +6,7 @@ import { configure } from "./rpc/configure";
 import { signMessage } from "./rpc/signMessage";
 import { getState, updateNonce } from "./mina/state";
 import { PaymentParams, signPayment } from "./rpc/signPayment";
+import { verifyMessage } from "./rpc/verifyMessage";
 
 declare const wallet: SnapProvider;
 
@@ -15,7 +16,8 @@ export enum Methods {
   GetPublicKey = "mina_getPublicKey",
   GetAccount = "mina_getAccount",
   SignMessage = "mina_signMessage",
-  SignPayment = "mina_signPayment",
+  VerifyMessage = "mina_verifyMessage",
+  SendMessage = "mina_sendMessage",
   SendStakeDelegation = "mina_sendStakeDelegation",
 }
 
@@ -54,8 +56,17 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
         client,
         (request.params as { message: string }).message
       );
-    case Methods.SignPayment:
+    case Methods.SendMessage:
       return await signPayment(wallet, client, request.params as PaymentParams);
+    case Methods.VerifyMessage:
+      return await verifyMessage(
+        wallet,
+        client,
+        (request.params as { field: string }).field,
+        (request.params as { scalar: string }).scalar,
+        (request.params as { publicKey: string }).publicKey,
+        (request.params as { message: string }).message
+      );
     case Methods.SendStakeDelegation:
       // client.signStakeDelegation(stakeDelegation: StakeDelegation, privateKey: PrivateKey): Signed<StakeDelegation>;
       throw new Error("WIP method");
