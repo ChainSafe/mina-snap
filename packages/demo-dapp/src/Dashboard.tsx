@@ -2,7 +2,7 @@ import { Button, CornerDialog, Heading, Pane, Spinner, TextInput, toaster } from
 import { FC, Fragment, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getSignedMessage } from "./services/snap";
+import { enableSnap, getSignedMessage, sendTransaction } from "./services/snap";
 import { ISignMessageResponse } from "./types";
 
 export const Dashboard: FC = () => {
