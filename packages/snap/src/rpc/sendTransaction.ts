@@ -2,7 +2,7 @@ import { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
 import { ExplorerAPI } from "src/api/api";
 import { getKeypair } from "../mina/keypair";
-import { getState, updateNonce, updateTransactions } from "../mina/state";
+import { getState, updateNonce } from "../mina/state";
 import { showConfirmationDialog } from "../prompts/confirmation";
 import { messageCreator } from "../prompts/message";
 
