@@ -2,7 +2,7 @@ import { Button, Spinner, TextInput, toaster } from "evergreen-ui";
 import { FC, Fragment, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getBalance, getPublicKey } from "./services/snap";
+import { enableSnap, getAccount, getPublicKey, getSignMessage, sendTransaction } from "./services/snap";
 import { ISignMessageResponse } from "./types";
 
 export const Dashboard: FC = () => {
@@ -32,8 +32,9 @@ export const Dashboard: FC = () => {
     (async function () {
       setIsLoading(true)
       try {
-        setUserAddress(await getPublicKey())
-        setUserBalance((await getBalance()).account.balance.total)
+        const account = await getAccount();
+        setUserAddress(account.account.publicKey);
+        setUserBalance(account.account.balance.total);
       } catch(e: any) {
         console.error(e)
         toaster.danger(e.message)
@@ -56,7 +57,7 @@ export const Dashboard: FC = () => {
   const signMessage = async () => {
     setIsLoading(true)
     try{
-      const signMessageResponse = (await getSignedMessage(signMessageData)) as ISignMessageResponse;
+      const signMessageResponse = (await getSignMessage(signMessageData)) as ISignMessageResponse;
       setIsLoading(false)
       if(signMessageResponse.confirmed === false) {
         toaster.warning("Message not confirmed")

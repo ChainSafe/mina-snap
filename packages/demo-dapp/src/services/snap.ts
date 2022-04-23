@@ -36,7 +36,7 @@ export enum MinaRPCMethods {
     Ping = "mina_ping",
     Configure = "mina_configure",
     GetPublicKey = "mina_getPublicKey",
-    GetBalance = "mina_getBalance",
+    GetAccount = "mina_getAccount",
     SignMessage = "mina_signMessage",
     VerifyMessage = "mina_verifyMessage",
     SendMessage = "mina_sendMessage",
@@ -63,16 +63,19 @@ const pingSnap = (): Promise<true> => sendSnapMethod(MinaRPCMethods.Ping);
 
 export const getPublicKey = () => sendSnapMethod(MinaRPCMethods.GetPublicKey) as Promise<string>;
 
-export type Balance = {
+export type Account = {
     account: {
+      publicKey: string;
       balance: {
         total: string;
       };
+      nonce: number;
     };
   };
   
+  
 
-export const getBalance = () => sendSnapMethod(MinaRPCMethods.GetBalance) as Promise<Balance>;
+export const getAccount = () => sendSnapMethod(MinaRPCMethods.GetAccount) as Promise<Account>;
 
 export const getSignMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
 
