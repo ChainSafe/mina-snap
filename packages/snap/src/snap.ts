@@ -9,6 +9,7 @@ import { getState } from "./mina/state";
 declare const wallet: SnapProvider;
 
 export enum Methods {
+  Ping = "mina_ping",
   Configure = "mina_configure",
   GetPublicKey = "mina_getPublicKey",
   GetBalance = "mina_getBalance",
@@ -30,6 +31,8 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
   const api = new ExplorerAPI("https://devnet.api.minaexplorer.com/");
 
   switch (request.method) {
+    case Methods.Ping:
+      return true;
     case Methods.Configure:
       return await configure(
         wallet,
