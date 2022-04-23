@@ -49,7 +49,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.SendMessage:
       // client.signPayment(payment: Payment, privateKey: PrivateKey): Signed<Payment>;
       throw new Error("WIP method");
-      case Methods.SendStakeDelegation:
+    case Methods.SendStakeDelegation:
       // client.signStakeDelegation(stakeDelegation: StakeDelegation, privateKey: PrivateKey): Signed<StakeDelegation>;
       throw new Error("WIP method");
     default:
