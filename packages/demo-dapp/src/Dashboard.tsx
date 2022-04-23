@@ -1,15 +1,16 @@
-import { Button, Spinner, TextInput, toaster } from "evergreen-ui";
+import { Button, Spinner, TextInput, TickCircleIcon, toaster } from "evergreen-ui";
 import { FC, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getAccount, getSignMessage, sendTransaction, verifyMessage } from "./services/snap";
+import { enableSnap, getAccount, getSignMessage, isMetamaskSnapsSupported, sendTransaction, verifyMessage } from "./services/snap";
 import { ISignMessageResponse, ITransactionResponse } from "./types";
-import {VerifyMessage} from "./components/VerifyMessage";
+import { VerifyMessage } from "./components/VerifyMessage";
 import useInterval from "use-interval";
 import { SendTx } from "./components/SendTx";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
+  const [isFlaskInstalled, setFlaskInstalled] = useState(false);
   // TODO
   const [userAddress, setUserAddress] = useState("loading...")
   const [userBalance, setUserBalance] = useState("loading...")
@@ -52,11 +53,28 @@ export const Dashboard: FC = () => {
     })()
   }, [snapConnected])
 
+  useEffect(() => {
+    (async function () {
+      try {
+        const result = await isMetamaskSnapsSupported()
+        setFlaskInstalled(result)
+      } catch (e: any) {
+        console.error(e)
+      }
+    })()
+  }, [isFlaskInstalled])
+
   const onConnect = async () => {
     setIsLoading(true)
-    const isConnected = await enableSnap()
-    setIsLoading(false)
-    setSnapConnected(isConnected)
+    try {
+      const isConnected = await enableSnap()
+      setSnapConnected(isConnected)
+    } catch (e) {
+
+    } finally {
+      setIsLoading(false)
+    }
+
   }
 
   //--SIGN MESSAGE
@@ -68,13 +86,12 @@ export const Dashboard: FC = () => {
     try {
       const signMessageResponse = (await getSignMessage(signMessageData)) as ISignMessageResponse;
       setIsLoading(false)
+
       if(signMessageResponse.confirmed === false) {
-        setIsLoading(false);
         toaster.warning("Message not confirmed")
         return
       }
 
-      setIsLoading(false);
       toaster.success(`Message signed successfully!: ${signMessageResponse.signature.data.message}`);
     } catch {
       setIsLoading(false)
@@ -131,7 +148,22 @@ export const Dashboard: FC = () => {
       <Logo className={cls({ connected: snapConnected })} />
     </header>
     {!snapConnected ?
-      <Button disabled={isLoading} className="connect-button" onClick={() => onConnect()}>Connect snap</Button> :
+      <>
+        {
+          isFlaskInstalled ?
+            <Button disabled={true} className="connect-button">Metamask Flask Installed <TickCircleIcon style={{marginLeft: "0.1“rem"}} color="success" marginRight={16} /></Button>
+            :
+            <a
+              className="connect-button"
+              href="https://github.com/ChainSafe/mina-snap/releases/tag/flask-demo"
+              target="_blank" rel="noreferrer"
+            >
+              <Button className="connect-button">Install Metamask Flask</Button>
+            </a>
+        }
+
+        <Button disabled={isLoading || !isFlaskInstalled} className="connect-button" onClick={() => onConnect()}>Connect snap</Button>
+      </> :
       <div className="dashboard-connected">
         <div className="row">
           <div className="user-data box">
