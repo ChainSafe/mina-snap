@@ -94,7 +94,7 @@ export const Dashboard: FC = () => {
 
       setIsLoading(false);
       toaster.success(`Sent transaction: ${sendTransactionResponse.tx.result.payment.hash}`);
-    } catch {
+    } catch(error) {
       setIsLoading(false)
       toaster.danger("Error signing message!");
     }

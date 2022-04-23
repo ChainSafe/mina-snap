@@ -68,7 +68,6 @@ export async function sendTransaction(
     }
 
     await updateNonce(wallet, state.nonce + 1);
-    await updateTransactions(wallet, (tx as { result: unknown }).result);
     return {
       confirmed: true,
       error: null,
