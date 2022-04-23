@@ -1,12 +1,22 @@
-import { Button, Heading, Pane, TextInput, toaster } from "evergreen-ui";
+import { Button, Heading, Pane, Spinner, TextInput, toaster } from "evergreen-ui";
 import { FC, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
+import { enableSnap } from "./services/snap";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
   const [userAddress, setUserAddress] = useState("B62qjSzhoBsUKNKALCJ5XeG5NCS3tR1WUFof7n82def1mquxXhrFaSF")
   const [userBalance, setUserBalance] = useState("909302")
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onConnect = async () => {
+    setIsLoading(true)
+    const isConnected = await enableSnap()
+    setIsLoading(false)
+    setSnapConnected(isConnected)
+  }
 
   const signMessage = () => {
     //TODO
@@ -37,29 +47,35 @@ export const Dashboard: FC = () => {
   // }, [])
 
   return <div className="dashboard">
-
+    {
+      isLoading && <div className="spinner-container"><Spinner/></div>
+      
+    }
     <header>
       <h1 >Mina Snap</h1>
       <Logo className={cls({ connected: snapConnected })} />
     </header>
     {!snapConnected ?
-      <Button onClick={() => setSnapConnected(true)}>Connect snap</Button> :
+      <Button disabled={isLoading} className="connect-button" onClick={() => onConnect()}>Connect snap</Button> :
       <div className="dashboard-connected">
-        <div className="user-data box">
-          <div>
-            <h3>Address</h3>
-            <p>{userAddress}</p>
+        <div className="row">
+          <div className="user-data box">
+            <div>
+              <h3>Address</h3>
+              <p>{userAddress}</p>
+            </div>
+            <div>
+              <h3>Balance</h3>
+              <p>{userBalance} MINA</p>
+            </div>
           </div>
-          <div>
-            <h3>Balance</h3>
-            <p>{userBalance} MINA</p>
+          <div className="sign-message box">
+            <h3>Sign message</h3>
+            <TextInput></TextInput>
+            <Button onClick={signMessage}>Sign</Button>
           </div>
         </div>
-        <div className="sign-message box">
-          <h3>Sign message</h3>
-          <TextInput></TextInput>
-          <Button onClick={signMessage}>Sign</Button>
-        </div>
+        <div className="row">
         <div className="send-tx box">
           <h2>Send message</h2>
           <h3>Recipient</h3>
@@ -82,6 +98,8 @@ export const Dashboard: FC = () => {
           <TextInput></TextInput>
           <Button onClick={verifyMessage}>Verify</Button>
         </div>
+        </div>
+
       </div>
     }
   </div>

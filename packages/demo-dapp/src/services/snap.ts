@@ -1,7 +1,7 @@
-import {defaultSnapId} from "../config";
-import {getEthereum, hasMetaMask} from "../utils/ethereum";
+import { defaultSnapId } from "../config";
+import { getEthereum, hasMetaMask } from "../utils/ethereum";
 
-const connect = async (): Promise<true> => {
+export const enableSnap = async (): Promise<true> => {
     if (!hasMetaMask()) {
         throw new Error("Metamask is not installed");
     }
@@ -13,17 +13,18 @@ const connect = async (): Promise<true> => {
         method: "wallet_enable",
         params: [
             {
-                [`wallet_snap_${defaultSnapId}`]: {version: "latest"},
+                [`wallet_snap_${defaultSnapId}`]: { version: "latest" },
             },
         ],
     });
 
     // wait to load snap and return true on finish
-    for (;;) {
+    for (; ;) {
         try {
             if (await pingSnap()) return true;
-            await new Promise(resolve => setTimeout(resolve, 500));
-        } catch {}
+        } catch {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
     }
 };
 
@@ -45,8 +46,8 @@ type Params = { [key: string]: string | number | Params }
 
 async function sendSnapMethod<T>(method: MinaRPCMethods, params?: Params): Promise<T> {
     return await getEthereum().request({
-        method: defaultSnapId,
-        params: [{method, params}],
+        method: 'wallet_invokeSnap',
+        params: [defaultSnapId, { method, params }],
     });
 }
 
