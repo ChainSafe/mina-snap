@@ -12,3 +12,13 @@ export interface ISignMessageResponse {
     }
   };
 }
+
+export type Account = {
+  account: {
+    publicKey: string;
+    balance: {
+      total: string;
+    };
+    nonce: number;
+  };
+};

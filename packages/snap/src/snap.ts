@@ -14,6 +14,7 @@ declare const wallet: SnapProvider;
 export enum Methods {
   Ping = "mina_ping",
   Configure = "mina_configure",
+  GetNetwork = "mina_getNetwork",
   GetPublicKey = "mina_getPublicKey",
   GetAccount = "mina_getAccount",
   SignMessage = "mina_signMessage",
@@ -45,34 +46,22 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.Ping:
       return true;
     case Methods.Configure:
-      verifyParams(params,{ network: 'string' });
-      return await configure(
-        wallet,
-          params.network
-      );
+      verifyParams(params,{ network: ['undefined', 'string'] });
+      return await configure(wallet, params.network);
+    case Methods.GetNetwork:
+      return state.mina.network;
     case Methods.GetPublicKey:
       return await getPublicKey(wallet, client);
     case Methods.GetAccount:
       return await api.getAccount(await getPublicKey(wallet, client));
     case Methods.SignMessage:
       verifyParams(params,{ message: 'string' });
-      return await signMessage(
-        wallet,
-        client,
-        params.message,
-      );
+      return await signMessage(wallet, client, params.message);
     case Methods.SendMessage:
       return await signPayment(wallet, client, request.params as PaymentParams);
     case Methods.VerifyMessage:
       verifyParams(params,{ field: 'string', scalar: 'string', publicKey: 'string', message: 'string' });
-      return await verifyMessage(
-        wallet,
-        client,
-        params.field,
-        params.scalar,
-        params.publicKey,
-        params.message,
-      );
+      return await verifyMessage(wallet, client, params.field, params.scalar, params.publicKey, params.message);
     case Methods.SendStakeDelegation:
       // client.signStakeDelegation(stakeDelegation: StakeDelegation, privateKey: PrivateKey): Signed<StakeDelegation>;
       throw new Error("WIP method");
