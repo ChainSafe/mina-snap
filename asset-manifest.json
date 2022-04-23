@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/mina-snap/static/css/main.0ac6f2b2.css",
-    "main.js": "/mina-snap/static/js/main.40b6ead5.js",
+    "main.js": "/mina-snap/static/js/main.a4d8272a.js",
     "static/js/415.be8845d3.chunk.js": "/mina-snap/static/js/415.be8845d3.chunk.js",
     "static/media/Ubuntu-Regular.ttf": "/mina-snap/static/media/Ubuntu-Regular.1cbb1b79a23478cc89ad.ttf",
     "static/media/Ubuntu-Bold.ttf": "/mina-snap/static/media/Ubuntu-Bold.fec2d0f1431a6114a6ce.ttf",
@@ -9,11 +9,11 @@
     "static/media/logo.svg": "/mina-snap/static/media/logo.c2fbf4c878e89151aec87ea0ec62add7.svg",
     "index.html": "/mina-snap/index.html",
     "main.0ac6f2b2.css.map": "/mina-snap/static/css/main.0ac6f2b2.css.map",
-    "main.40b6ead5.js.map": "/mina-snap/static/js/main.40b6ead5.js.map",
+    "main.a4d8272a.js.map": "/mina-snap/static/js/main.a4d8272a.js.map",
     "415.be8845d3.chunk.js.map": "/mina-snap/static/js/415.be8845d3.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0ac6f2b2.css",
-    "static/js/main.40b6ead5.js"
+    "static/js/main.a4d8272a.js"
   ]
 }
