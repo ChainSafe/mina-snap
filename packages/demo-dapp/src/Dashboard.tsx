@@ -3,10 +3,10 @@ import { FC, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
 import { enableSnap, getAccount, getSignMessage, sendTransaction, verifyMessage } from "./services/snap";
-import { ISignMessageResponse } from "./types";
+import { ISignMessageResponse, ITransactionResponse } from "./types";
+import {VerifyMessage} from "./components/VerifyMessage";
 import useInterval from "use-interval";
 import { SendTx } from "./components/SendTx";
-import { VerifyMessage } from "./components/VerifyMessage";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
@@ -68,9 +68,13 @@ export const Dashboard: FC = () => {
     try {
       const signMessageResponse = (await getSignMessage(signMessageData)) as ISignMessageResponse;
       setIsLoading(false)
-      if (signMessageResponse.confirmed === false) {
+      if(signMessageResponse.confirmed === false) {
+        setIsLoading(false);
         toaster.warning("Message not confirmed")
+        return
       }
+
+      setIsLoading(false);
       toaster.success(`Message signed successfully!: ${signMessageResponse.signature.data.message}`);
     } catch {
       setIsLoading(false)
@@ -82,12 +86,27 @@ export const Dashboard: FC = () => {
   const sendTxOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSendTxData({ ...sendTxData, [e.target.name]: e.target.value })
   }
+
   const sendTx = async () => {
     setIsLoading(true)
-    const sendTransactionResponse = await sendTransaction(sendTxData);
-    console.log(sendTransactionResponse)
-    setIsLoading(false)
-    toaster.success(`Sent transaction: ${sendTransactionResponse}`);
+    try {
+      const sendTransactionResponse = (await sendTransaction(sendTxData)) as ITransactionResponse;
+      if (sendTransactionResponse.error !== null) {
+        throw new Error("Error");
+      }
+
+      if(sendTransactionResponse.confirmed === false) {
+        setIsLoading(false);
+        toaster.warning("Transaction not confirmed")
+        return
+      }
+
+      setIsLoading(false);
+      toaster.success(`Sent transaction: ${sendTransactionResponse.tx.result.payment.hash}`);
+    } catch {
+      setIsLoading(false)
+      toaster.danger("Error signing message!");
+    }
   }
 
   //--VERIFY MESSAGE
