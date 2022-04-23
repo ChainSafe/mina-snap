@@ -1,5 +1,6 @@
 import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
+import { ExplorerAPI } from "./api/api";
 import { getPublicKey } from "./rpc/getPublicKey";
 import { configure } from "./rpc/configure";
 import { signMessage } from "./rpc/signMessage";
@@ -27,6 +28,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
 
   const state = await getState(wallet);
   const client = new Client({ network: state.mina.network });
+  const api = new ExplorerAPI("https://devnet.api.minaexplorer.com/");
 
   switch (request.method) {
     case Methods.Ping:
@@ -39,7 +41,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.GetPublicKey:
       return await getPublicKey(wallet, client);
     case Methods.GetBalance:
-      throw new Error("WIP method");
+      return await api.getBalance(await getPublicKey(wallet, client));
     case Methods.SignMessage:
       return await signMessage(
         wallet,
