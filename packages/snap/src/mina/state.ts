@@ -38,6 +38,6 @@ export const updateNonce = async (
 
 export const EmptyMetamaskState: () => MetamaskState = () => ({
   mina: {
-    network: "mainnet",
+    network: "testnet",
   },
 });

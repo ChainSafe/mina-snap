@@ -1,56 +1,25 @@
-import {Button, Spinner, TextInputField, toaster} from "evergreen-ui";
-import {verifyMessage} from "../services/snap";
-import {ChangeEvent, useState} from "react";
+import React from "react"
+import { Button, TextInput } from "evergreen-ui"
 
-type Event = ChangeEvent<HTMLInputElement>;
+interface IVerifyMessage {
+  isLoading: boolean;
+  verifyMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  verifyMessageSubmit: () => Promise<void>
+}
 
-export const VerifyMessage: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState('');
-    const [publicKey, setPublicKey] = useState('');
-    const [field, setField] = useState('');
-    const [scalar, setScalar] = useState('');
-
-    const verify = async () => {
-        setIsLoading(true);
-        const result = await verifyMessage(field, scalar, publicKey, message);
-        console.warn(result);
-        if (result) toaster.success("Message Successfully verified");
-        else toaster.danger("Failed to verify message");
-        setIsLoading(false);
-    }
-
-    return (
-        <>
-            {isLoading && <div className="spinner-container"><Spinner/></div>}
-            <div className="verify-message box">
-                <h2>Verify message</h2>
-                <TextInputField
-                    onChange={(e: Event) => setMessage(e.target.value)}
-                    label="Message"
-                    required
-                    placeholder="Placeholder text"
-                />
-                <TextInputField
-                    onChange={(e: Event) => setPublicKey(e.target.value)}
-                    label="Public key"
-                    required
-                    placeholder="Placeholder text"
-                />
-                <TextInputField
-                    onChange={(e: Event) => setField(e.target.value)}
-                    label="Field"
-                    required
-                    placeholder="Placeholder text"
-                />
-                <TextInputField
-                    onChange={(e: Event) => setScalar(e.target.value)}
-                    label="Scalar"
-                    required
-                    placeholder="Placeholder text"
-                />
-                <Button onClick={verify}>Verify</Button>
-            </div>
-        </>
-    );
-};
+export const VerifyMessage: React.FC<IVerifyMessage> = ({verifyMessageChange, verifyMessageSubmit, isLoading}) => {
+  return (
+    <div className="send-tx box">
+    <h2>Send message</h2>
+    <h3>Message</h3>
+    <TextInput name="message" onChange={verifyMessageChange} />
+    <h3>Public key</h3>
+    <TextInput name="publicKey" onChange={verifyMessageChange} />
+    <h3>Field</h3>
+    <TextInput name="field" onChange={verifyMessageChange} />
+    <h3>Scalar</h3>
+    <TextInput name="scalar" onChange={verifyMessageChange} />
+    <Button disabled={isLoading} onClick={verifyMessageSubmit}>Send</Button>
+  </div>
+  )
+}
