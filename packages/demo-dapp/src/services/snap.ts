@@ -39,7 +39,7 @@ export enum MinaRPCMethods {
     GetAccount = "mina_getAccount",
     SignMessage = "mina_signMessage",
     VerifyMessage = "mina_verifyMessage",
-    SendMessage = "mina_sendMessage",
+    SendTransaction = "mina_sendTransaction",
     SendStakeDelegation = "mina_sendStakeDelegation",
 }
 
@@ -72,14 +72,14 @@ export type Account = {
       nonce: number;
     };
   };
-  
-  
+
+
 
 export const getAccount = () => sendSnapMethod(MinaRPCMethods.GetAccount) as Promise<Account>;
 
 export const getSignMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
 
-export const sendTransaction = (tx: Tx) => sendSnapMethod(MinaRPCMethods.SendMessage, { ...tx });
+export const sendTransaction = (tx: Tx) => sendSnapMethod(MinaRPCMethods.SendTransaction, { ...tx });
 
 export const setNetwork = (network: string) => sendSnapMethod(MinaRPCMethods.Configure, { network })
 

@@ -7,7 +7,7 @@
     "url": "https://github.com/Chainsafe/minasnap.git"
   },
   "source": {
-    "shasum": "G1V2NSVjfGUyZR2yWuGlsQsL+26tPokLW/rQTMnrYsQ=",
+    "shasum": "dl5AmOt687ywn8kFXbbzevPpgI6W53/E6tJdGux5HCw=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

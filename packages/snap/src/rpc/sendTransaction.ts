@@ -1,6 +1,7 @@
 import { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
 import { Payment, Signed } from "mina-signer/dist/src/TSTypes";
+import { ExplorerAPI } from "src/api/api";
 import { getKeypair } from "../mina/keypair";
 import { getState, updateNonce } from "../mina/state";
 import { showConfirmationDialog } from "../prompts/confirmation";
@@ -14,21 +15,20 @@ export type PaymentParams = {
 };
 
 export type SignMessageResponse = {
-  signedPayment: Signed<Payment>;
+  tx: unknown;
   confirmed: boolean;
   error: Error;
 };
 
-export async function signPayment(
+export async function sendTransaction(
   wallet: SnapProvider,
   client: Client,
+  api: ExplorerAPI,
   payment: PaymentParams
 ): Promise<SignMessageResponse> {
   try {
     const state = await getState(wallet);
     const kp = await getKeypair(client, wallet);
-
-    console.log(payment);
 
     const confirmation = await showConfirmationDialog(wallet, {
       description: `It will be signed with address: ${kp.publicKey}`,
@@ -41,44 +41,45 @@ export async function signPayment(
         { message: "to", value: payment.to },
       ]),
     });
-    console.log(confirmation);
     if (!confirmation) {
       return {
         confirmed: false,
         error: null,
-        signedPayment: null,
+        tx: null,
       };
     }
 
-    console.log(state.nonce);
-    console.log("before sign paymnet");
-    const signedPayment = client.signPayment(
-      {
-        amount: payment.amount,
-        fee: payment.fee,
-        from: kp.publicKey,
-        memo: payment.memo,
-        nonce: state.nonce,
-        to: payment.to,
-      },
-      kp.privateKey
+    state.nonce = 0;
+    const pymn = {
+      amount: payment.amount,
+      fee: payment.fee,
+      from: kp.publicKey,
+      memo: payment.memo,
+      nonce: state.nonce,
+      to: payment.to,
+    };
+    const signedPayment = client.signPayment(pymn, kp.privateKey);
+
+    console.log("SIGNED PAYMENT");
+    console.log(client.verifyPayment(signedPayment));
+
+    const tx = await api.broadcastTx(
+      kp.publicKey,
+      signedPayment.signature,
+      pymn
     );
 
-    console.log("before nonce");
     await updateNonce(wallet, state.nonce + 1);
-    console.log("after update nonce");
-
     return {
       confirmed: true,
       error: null,
-      signedPayment: signedPayment,
+      tx: tx,
     };
   } catch (error) {
-    console.log(error);
     return {
       confirmed: false,
       error: error,
-      signedPayment: null,
+      tx: null,
     };
   }
 }

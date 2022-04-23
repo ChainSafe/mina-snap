@@ -5,7 +5,7 @@ import { getPublicKey } from "./rpc/getPublicKey";
 import { configure } from "./rpc/configure";
 import { signMessage } from "./rpc/signMessage";
 import { getState, updateNonce } from "./mina/state";
-import { PaymentParams, signPayment } from "./rpc/signPayment";
+import { PaymentParams, sendTransaction } from "./rpc/sendTransaction";
 import { verifyMessage } from "./rpc/verifyMessage";
 
 declare const wallet: SnapProvider;
@@ -17,7 +17,7 @@ export enum Methods {
   GetAccount = "mina_getAccount",
   SignMessage = "mina_signMessage",
   VerifyMessage = "mina_verifyMessage",
-  SendMessage = "mina_sendMessage",
+  SendTransaction = "mina_sendTransaction",
   SendStakeDelegation = "mina_sendStakeDelegation",
 }
 
@@ -62,8 +62,13 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
         client,
         (request.params as { message: string }).message
       );
-    case Methods.SendMessage:
-      return await signPayment(wallet, client, request.params as PaymentParams);
+    case Methods.SendTransaction:
+      return await sendTransaction(
+        wallet,
+        client,
+        api,
+        request.params as PaymentParams
+      );
     case Methods.VerifyMessage:
       return await verifyMessage(
         wallet,
