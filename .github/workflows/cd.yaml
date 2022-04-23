@@ -48,7 +48,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
         if: ${{ steps.release.outputs.releases_created }}
       
-      - run: yarn install --ignore-scripts --frozen-lockfile
+      - run: yarn install --frozen-lockfile
         if: ${{ steps.release.outputs.releases_created }}
       
       - run: yarn build
