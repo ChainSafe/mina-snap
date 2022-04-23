@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://github.com/ChainSafe/mina-snap/compare/v1.0.0...v1.0.1) (2022-04-23)
+
+
+### Miscellaneous
+
+* fix lint ([#38](https://github.com/ChainSafe/mina-snap/issues/38)) ([c866380](https://github.com/ChainSafe/mina-snap/commit/c86638061b27e038e75b3a750e26410cd489f05f))
+
 ## 1.0.0 (2022-04-23)
 
 
