@@ -189,7 +189,7 @@ export const Dashboard: FC = () => {
       {transactionResponse && <>
         <p>Transaction response</p>
         {/* <p>{transactionResponse.tx.result.payment.hash}</p> */}
-        <a className="link" target="_blank" rel="noopener noreferrer"  href={`https://minaexplorer.com/transaction/${transactionResponse.tx.result.payment.hash}`}>
+        <a className="link" target="_blank" rel="noopener noreferrer"  href={`https://devnet.minaexplorer.com/transaction/${transactionResponse.tx.result.payment.hash}`}>
         {transactionResponse.tx.result.payment.hash}
           </a>
       </>}
