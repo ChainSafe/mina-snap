@@ -21,7 +21,7 @@ export async function signMessage(
 
     const confirmation = await showConfirmationDialog(wallet, {
       description: `It will be signed with address: ${keypair.publicKey}`,
-      prompt: `Do you want to sign this message?`,
+      prompt: `Do you want to sign this payment?`,
       textAreaContent: messageCreator([
         { message: "message:", value: message },
       ]),
