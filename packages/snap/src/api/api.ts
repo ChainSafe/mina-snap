@@ -1,4 +1,4 @@
-import { Balance } from "./types";
+import { Account } from "./types";
 
 export class ExplorerAPI {
   uri: string;
@@ -7,8 +7,8 @@ export class ExplorerAPI {
     this.uri = uri;
   }
 
-  async getBalance(publicKey: string): Promise<Balance> {
+  async getAccount(publicKey: string): Promise<Account> {
     const response = await fetch(`${this.uri}/accounts/${publicKey}`);
-    return (await response.json()) as Balance;
+    return (await response.json()) as Account;
   }
 }
