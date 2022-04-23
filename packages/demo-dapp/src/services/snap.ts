@@ -54,9 +54,20 @@ async function sendSnapMethod<T>(method: MinaRPCMethods, params?: Params): Promi
 
 const pingSnap = (): Promise<true> => sendSnapMethod(MinaRPCMethods.Ping);
 
-export const getPublicKey = () => sendSnapMethod(MinaRPCMethods.GetPublicKey);
+export const getPublicKey = () => sendSnapMethod(MinaRPCMethods.GetPublicKey) as Promise<string>;
 
-export const getSignedMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
+export type Balance = {
+    account: {
+      balance: {
+        total: string;
+      };
+    };
+  };
+  
+
+export const getBalance = () => sendSnapMethod(MinaRPCMethods.GetBalance) as Promise<Balance>;
+
+export const getSignMessage = (message: string) => sendSnapMethod(MinaRPCMethods.SignMessage, { message });
 
 export const setNetwork = (network: string) => sendSnapMethod(MinaRPCMethods.Configure, { network })
 
