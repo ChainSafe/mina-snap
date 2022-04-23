@@ -1,19 +1,16 @@
 import { Button, Spinner, TextInput, TickCircleIcon, toaster } from "evergreen-ui";
-import { FC, useEffect, useState } from "react";
+import {FC, useEffect, useState} from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getAccount, getSignMessage, isMetamaskSnapsSupported, sendTransaction, verifyMessage } from "./services/snap";
+import { enableSnap, getSignMessage, isMetamaskSnapsSupported, sendTransaction, verifyMessage } from "./services/snap";
 import { ISignMessageResponse, ITransactionResponse } from "./types";
 import { VerifyMessage } from "./components/VerifyMessage";
-import useInterval from "use-interval";
+import {Account} from "./components/Account";
 import { SendTx } from "./components/SendTx";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
   const [isFlaskInstalled, setFlaskInstalled] = useState(false);
-  // TODO
-  const [userAddress, setUserAddress] = useState("loading...")
-  const [userBalance, setUserBalance] = useState("loading...")
 
   const [signMessageData, setSignMessageData] = useState("");
   const [sendTxData, setSendTxData] = useState({
@@ -30,28 +27,6 @@ export const Dashboard: FC = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
-  useInterval(() => {
-    getAccount().then((account) => {
-      setUserBalance(account.account.balance.total);
-    }).catch()
-  }, 30000)
-
-  useEffect(() => {
-    if (!snapConnected) return;
-    (async function () {
-      setIsLoading(true)
-      try {
-        const account = await getAccount();
-        setUserAddress(account.account.publicKey);
-        setUserBalance(account.account.balance.total);
-      } catch (e: any) {
-        console.error(e)
-        toaster.danger(e.message)
-      }
-      setIsLoading(false)
-    })()
-  }, [snapConnected])
 
   useEffect(() => {
     (async function () {
@@ -74,7 +49,6 @@ export const Dashboard: FC = () => {
     } finally {
       setIsLoading(false)
     }
-
   }
 
   //--SIGN MESSAGE
@@ -89,7 +63,7 @@ export const Dashboard: FC = () => {
 
       if(signMessageResponse.confirmed === false) {
         toaster.warning("Message not confirmed")
-        return
+        return;
       }
 
       toaster.success(`Message signed successfully!: ${signMessageResponse.signature.data.message}`);
@@ -166,16 +140,7 @@ export const Dashboard: FC = () => {
       </> :
       <div className="dashboard-connected">
         <div className="row">
-          <div className="user-data box">
-            <div>
-              <h3>Address</h3>
-              <p>{userAddress}</p>
-            </div>
-            <div>
-              <h3>Balance</h3>
-              <p>{userBalance} MINA</p>
-            </div>
-          </div>
+          <Account />
           <div className="sign-message box">
             <h2>Sign message</h2>
             <TextInput name="signMessage" onChange={signMessageOnChange} />
@@ -183,12 +148,12 @@ export const Dashboard: FC = () => {
           </div>
         </div>
         <div className="row">
-        <SendTx 
+        <SendTx
           sendTxOnChange={sendTxOnChange}
           sendTx={sendTx}
           isLoading={isLoading}
         />
-        <VerifyMessage 
+        <VerifyMessage
           verifyMessageChange={verifyMessageOnChange}
           verifyMessageSubmit={verifyMessageSubmit}
           isLoading={isLoading}
