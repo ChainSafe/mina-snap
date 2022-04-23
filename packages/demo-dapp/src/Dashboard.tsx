@@ -1,5 +1,5 @@
 import { Button, Spinner, TextInput, TickCircleIcon, toaster } from "evergreen-ui";
-import { FC, useState } from "react";
+import {FC, useEffect, useState} from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
 import { enableSnap, getSignMessage, isMetamaskSnapsSupported, sendTransaction, verifyMessage } from "./services/snap";

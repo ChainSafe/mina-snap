@@ -63,10 +63,6 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.SignMessage:
       verifyParams(params,{ message: 'string' });
       return await signMessage(wallet, client, params.message);
-    case Methods.SendMessage:
-      return await signPayment(wallet, client, request.params as PaymentParams);
-      verifyParams(params, { message: "string" });
-      return await signMessage(wallet, client, params.message);
     case Methods.SendTransaction:
       return await sendTransaction(
         wallet,
