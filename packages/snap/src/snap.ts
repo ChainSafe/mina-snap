@@ -1,9 +1,11 @@
 import type { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
+import { ExplorerAPI } from "./api/api";
 import { getPublicKey } from "./rpc/getPublicKey";
 import { configure } from "./rpc/configure";
 import { signMessage } from "./rpc/signMessage";
 import { getState } from "./mina/state";
+import {verifyMessage} from "./rpc/verifyMessage";
 
 declare const wallet: SnapProvider;
 
@@ -13,6 +15,7 @@ export enum Methods {
   GetPublicKey = "mina_getPublicKey",
   GetBalance = "mina_getBalance",
   SignMessage = "mina_signMessage",
+  VerifyMessage = "mina_verifyMessage",
   SendMessage = "mina_sendMessage",
   SendStakeDelegation = "mina_sendStakeDelegation",
 }
@@ -27,6 +30,7 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
 
   const state = await getState(wallet);
   const client = new Client({ network: state.mina.network });
+  const api = new ExplorerAPI("https://devnet.api.minaexplorer.com/");
 
   switch (request.method) {
     case Methods.Ping:
@@ -39,13 +43,22 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.GetPublicKey:
       return await getPublicKey(wallet, client);
     case Methods.GetBalance:
-      throw new Error("WIP method");
+      return await api.getBalance(await getPublicKey(wallet, client));
     case Methods.SignMessage:
       return await signMessage(
         wallet,
         client,
         (request.params as { message: string }).message
       );
+    case Methods.VerifyMessage:
+      return await verifyMessage(
+          wallet,
+          client,
+          (request.params as { field: string }).field,
+          (request.params as { scalar: string }).scalar,
+          (request.params as { publicKey: string }).publicKey,
+          (request.params as { message: string }).message,
+      )
     case Methods.SendMessage:
       // client.signPayment(payment: Payment, privateKey: PrivateKey): Signed<Payment>;
       throw new Error("WIP method");
