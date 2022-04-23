@@ -7,6 +7,7 @@ import { signMessage } from "./rpc/signMessage";
 import { getState, updateNonce } from "./mina/state";
 import { PaymentParams, signPayment } from "./rpc/signPayment";
 import { verifyMessage } from "./rpc/verifyMessage";
+import { verifyParams } from "./utils/verifyParams";
 
 declare const wallet: SnapProvider;
 
@@ -29,6 +30,8 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     throw new Error("Unsupported request.method");
   }
 
+  const params = request.params as any;
+
   const state = await getState(wallet);
   const client = new Client({ network: state.mina.network });
   const api = new ExplorerAPI("https://devnet.api.minaexplorer.com/");
@@ -42,30 +45,33 @@ wallet.registerRpcMessageHandler(async (origin, request) => {
     case Methods.Ping:
       return true;
     case Methods.Configure:
+      verifyParams(params,{ network: 'string' });
       return await configure(
         wallet,
-        (request.params as { network: string }).network
+          params.network
       );
     case Methods.GetPublicKey:
       return await getPublicKey(wallet, client);
     case Methods.GetAccount:
       return await api.getAccount(await getPublicKey(wallet, client));
     case Methods.SignMessage:
+      verifyParams(params,{ message: 'string' });
       return await signMessage(
         wallet,
         client,
-        (request.params as { message: string }).message
+        params.message,
       );
     case Methods.SendMessage:
       return await signPayment(wallet, client, request.params as PaymentParams);
     case Methods.VerifyMessage:
+      verifyParams(params,{ field: 'string', scalar: 'string', publicKey: 'string', message: 'string' });
       return await verifyMessage(
         wallet,
         client,
-        (request.params as { field: string }).field,
-        (request.params as { scalar: string }).scalar,
-        (request.params as { publicKey: string }).publicKey,
-        (request.params as { message: string }).message
+        params.field,
+        params.scalar,
+        params.publicKey,
+        params.message,
       );
     case Methods.SendStakeDelegation:
       // client.signStakeDelegation(stakeDelegation: StakeDelegation, privateKey: PrivateKey): Signed<StakeDelegation>;

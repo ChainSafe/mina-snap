@@ -18,14 +18,7 @@ export const enableSnap = async (): Promise<true> => {
         ],
     });
 
-    // wait to load snap and return true on finish
-    for (;;) {
-        try {
-            if (await pingSnap()) return true;
-        } catch {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-        }
-    }
+    return true;
 };
 
 //////////////////////////////////////
@@ -84,7 +77,7 @@ export const sendTransaction = (tx: Tx) => sendSnapMethod(MinaRPCMethods.SendMes
 export const setNetwork = (network: string) => sendSnapMethod(MinaRPCMethods.Configure, { network })
 
 export const verifyMessage = (field: string, scalar: string, publicKey: string, message: string) =>
-    sendSnapMethod(MinaRPCMethods.Configure, { field, scalar, publicKey, message });
+    sendSnapMethod(MinaRPCMethods.VerifyMessage, { field, scalar, publicKey, message });
 
 //////////////////////////////////////
 //// Helpers
