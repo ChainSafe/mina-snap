@@ -1,1 +1,1 @@
-export const defaultSnapId = 'local:http://localhost:8081';
+export const defaultSnapId = process.env.REACT_APP_SNAP_ID || 'local:http://localhost:8081';
