@@ -1,10 +1,10 @@
 import { SnapProvider } from "@metamask/snap-types";
 import Client from "mina-signer";
 import { Payment, Signed } from "mina-signer/dist/src/TSTypes";
-import { getKeypair } from "src/mina/keypair";
-import { getState, updateNonce } from "src/mina/state";
-import { showConfirmationDialog } from "src/prompts/confirmation";
-import { messageCreator } from "src/prompts/message";
+import { getKeypair } from "../mina/keypair";
+import { getState, updateNonce } from "../mina/state";
+import { showConfirmationDialog } from "../prompts/confirmation";
+import { messageCreator } from "../prompts/message";
 
 export type PaymentParams = {
   to: string;
