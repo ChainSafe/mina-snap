@@ -49,7 +49,6 @@ export async function sendTransaction(
       };
     }
 
-    state.nonce = 0;
     const pymn = {
       amount: payment.amount,
       fee: payment.fee,
