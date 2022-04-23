@@ -4,11 +4,12 @@ import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
 import { enableSnap, getAccount, getSignMessage, sendTransaction } from "./services/snap";
 import { ISignMessageResponse } from "./types";
+import {VerifyMessage} from "./components/VerifyMessage";
 import useInterval from "use-interval";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
-  // TODO 
+  // TODO
   const [userAddress, setUserAddress] = useState("loading...")
   const [userBalance, setUserBalance] = useState("loading...")
 
@@ -151,18 +152,7 @@ export const Dashboard: FC = () => {
           <TextInput name="fee" onChange={sendTxOnChange}/>
           <Button disabled={isLoading} onClick={sendTx}>Send</Button>
         </div>
-        <div className="verify-message box">
-          <h2>Verify message</h2>
-          <h3>Message</h3>
-          <TextInput name="message" onChange={verifyMessageOnChange}/>
-          <h3>Public key</h3>
-          <TextInput name="publicKey" onChange={verifyMessageOnChange}/>
-          <h3>Field</h3>
-          <TextInput name="field" onChange={verifyMessageOnChange}/>
-          <h3>Scalar</h3>
-          <TextInput name="scalar" onChange={verifyMessageOnChange}/>
-          <Button disabled={isLoading} onClick={verifyMessage}>Verify</Button>
-        </div>
+        <VerifyMessage />
         </div>
 
       </div>

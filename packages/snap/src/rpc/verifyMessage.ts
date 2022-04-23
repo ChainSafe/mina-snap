@@ -7,7 +7,7 @@ export async function verifyMessage(
   field: string,
   scalar: string,
   publicKey: string,
-  message: string
+  message: string,
 ): Promise<boolean> {
   return client.verifyMessage({
     data: { message, publicKey },
