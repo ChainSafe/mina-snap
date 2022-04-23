@@ -1,15 +1,15 @@
-import { Button, CornerDialog, Heading, Pane, Spinner, TextInput, toaster } from "evergreen-ui";
+import { Button, Spinner, TextInput, toaster } from "evergreen-ui";
 import { FC, Fragment, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
-import { enableSnap, getSignedMessage, sendTransaction } from "./services/snap";
+import { enableSnap, getAccount, getPublicKey, getSignMessage, sendTransaction } from "./services/snap";
 import { ISignMessageResponse } from "./types";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
-  // TODO
-  const [userAddress, setUserAddress] = useState("B62qjSzhoBsUKNKALCJ5XeG5NCS3tR1WUFof7n82def1mquxXhrFaSF")
-  const [userBalance, setUserBalance] = useState("909302")
+  // TODO 
+  const [userAddress, setUserAddress] = useState("loading...")
+  const [userBalance, setUserBalance] = useState("loading...")
 
   const [signMessageData, setSignMessageData] = useState("");
   const [sendTxData, setSendTxData] = useState({
@@ -27,6 +27,22 @@ export const Dashboard: FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    if(!snapConnected) return;
+    (async function () {
+      setIsLoading(true)
+      try {
+        const account = await getAccount();
+        setUserAddress(account.account.publicKey);
+        setUserBalance(account.account.balance.total);
+      } catch(e: any) {
+        console.error(e)
+        toaster.danger(e.message)
+      }
+      setIsLoading(false)
+    })()
+  }, [snapConnected])
+
   const onConnect = async () => {
     setIsLoading(true)
     const isConnected = await enableSnap()
@@ -41,7 +57,7 @@ export const Dashboard: FC = () => {
   const signMessage = async () => {
     setIsLoading(true)
     try{
-      const signMessageResponse = (await getSignedMessage(signMessageData)) as ISignMessageResponse;
+      const signMessageResponse = (await getSignMessage(signMessageData)) as ISignMessageResponse;
       setIsLoading(false)
       if(signMessageResponse.confirmed === false) {
         toaster.warning("Message not confirmed")
