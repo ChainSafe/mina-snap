@@ -1,16 +1,18 @@
-import { Button, Spinner, TextInput, TickCircleIcon, toaster } from "evergreen-ui";
-import {FC, useEffect, useState} from "react";
+import { Button, Dialog, Spinner, TextInput, TickCircleIcon, toaster } from "evergreen-ui";
+import { FC, useEffect, useState } from "react";
 import { ReactComponent as Logo } from './assets/logo.svg';
 import cls from "classnames";
 import { enableSnap, getSignMessage, isMetamaskSnapsSupported, sendTransaction, verifyMessage } from "./services/snap";
 import { ISignMessageResponse, ITransactionResponse } from "./types";
 import { VerifyMessage } from "./components/VerifyMessage";
-import {Account} from "./components/Account";
+import { Account } from "./components/Account";
 import { SendTx } from "./components/SendTx";
 
 export const Dashboard: FC = () => {
   const [snapConnected, setSnapConnected] = useState(false);
   const [isFlaskInstalled, setFlaskInstalled] = useState(false);
+
+  const [signMessageResponse, setSignMessageResponse] = useState<ISignMessageResponse | null>(null)
 
   const [signMessageData, setSignMessageData] = useState("");
   const [sendTxData, setSendTxData] = useState({
@@ -61,11 +63,12 @@ export const Dashboard: FC = () => {
       const signMessageResponse = (await getSignMessage(signMessageData)) as ISignMessageResponse;
       setIsLoading(false)
 
-      if(signMessageResponse.confirmed === false) {
+      if (signMessageResponse.confirmed === false) {
         toaster.warning("Message not confirmed")
         return;
       }
-
+      console.log(signMessageResponse)
+      setSignMessageResponse(signMessageResponse)
       toaster.success(`Message signed successfully!: ${signMessageResponse.signature.data.message}`);
     } catch {
       setIsLoading(false)
@@ -86,7 +89,7 @@ export const Dashboard: FC = () => {
         throw new Error("Error");
       }
 
-      if(sendTransactionResponse.confirmed === false) {
+      if (sendTransactionResponse.confirmed === false) {
         setIsLoading(false);
         toaster.warning("Transaction not confirmed")
         return
@@ -125,7 +128,7 @@ export const Dashboard: FC = () => {
       <>
         {
           isFlaskInstalled ?
-            <Button disabled={true} className="connect-button">Metamask Flask Installed <TickCircleIcon style={{marginLeft: "0.1“rem"}} color="success" marginRight={16} /></Button>
+            <Button disabled={true} className="connect-button">Metamask Flask Installed <TickCircleIcon style={{ marginLeft: "0.2rem" }} color="success" /></Button>
             :
             <a
               className="connect-button"
@@ -148,19 +151,33 @@ export const Dashboard: FC = () => {
           </div>
         </div>
         <div className="row">
-        <SendTx
-          sendTxOnChange={sendTxOnChange}
-          sendTx={sendTx}
-          isLoading={isLoading}
-        />
-        <VerifyMessage
-          verifyMessageChange={verifyMessageOnChange}
-          verifyMessageSubmit={verifyMessageSubmit}
-          isLoading={isLoading}
-        />
+          <SendTx
+            sendTxOnChange={sendTxOnChange}
+            sendTx={sendTx}
+            isLoading={isLoading}
+          />
+          <VerifyMessage
+            verifyMessageChange={verifyMessageOnChange}
+            verifyMessageSubmit={verifyMessageSubmit}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     }
+    <Dialog
+      title="Message signed successfully!"
+      isShown={signMessageResponse !== null}
+      onCloseComplete={() => setSignMessageResponse(null)}
+      hasCancel={false}
+      confirmLabel="OK"
+    >
+      {signMessageResponse && <>
+        <p>Signature field</p>
+        <p>{signMessageResponse.signature.signature.signature.field}</p>
+        <p>Signature scalar</p>
+        <p>{signMessageResponse.signature.signature.signature.scalar}</p>
+      </>}
+    </Dialog>
   </div>
 
 }

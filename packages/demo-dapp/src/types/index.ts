@@ -7,8 +7,12 @@ export interface ISignMessageResponse {
       publicKey: string;
     };
     signature: {
-      field: string;
-      scalar: string;
+      signature: {
+        field: string;
+        scalar: string;
+      }
+      signer: string;
+      string: string;
     }
   };
 }
